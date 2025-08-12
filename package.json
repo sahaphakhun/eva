@@ -1,0 +1,26 @@
+{
+  "name": "eva-cloud-website",
+  "version": "1.0.0",
+  "description": "EvA Cloud - Window and Door Software Website",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": [
+    "eva",
+    "cloud",
+    "window",
+    "door",
+    "software"
+  ],
+  "author": "EvA Cloud Team",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "compression": "^1.7.4"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

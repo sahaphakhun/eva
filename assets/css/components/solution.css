@@ -1,0 +1,22 @@
+.page-heading {
+  padding: 120px 0 60px;
+  background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
+}
+.page-heading .heading-1 { font-size: 48px; font-weight: 700; color: #121f3e; }
+.page-heading h6 { color: #6b7280; margin-top: 12px; }
+
+.product-sec { padding: 80px 0; }
+.product-sec .section-title { margin-bottom: 24px; }
+.product-sec .card { border: none; padding: 28px; border-radius: 16px; background: #fff; height: 100%; box-shadow: 0 8px 24px rgba(0,0,0,0.06); }
+.product-sec .card .icon { width: 84px; height: 84px; margin-bottom: 16px; }
+.product-sec .card h5 { margin-bottom: 8px; color: #121f3e; }
+.product-sec .card p { color: #4b5563; margin: 0; }
+
+.content-to-img .sec-img, .img-to-content .sec-img { text-align: center; }
+.content-to-img .sec-img img, .img-to-content .sec-img img { max-width: 100%; height: auto; border-radius: 12px; }
+
+@media (max-width: 991.98px) {
+  .page-heading { padding: 100px 0 40px; }
+  .page-heading .heading-1 { font-size: 36px; }
+}
+

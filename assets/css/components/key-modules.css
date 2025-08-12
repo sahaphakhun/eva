@@ -1,0 +1,120 @@
+/* Key Modules Section */
+.key-modules-section {
+    padding: 40px 0;
+    background-color: #fff;
+    position: relative;
+    z-index: 10;
+    margin-top: 20px;
+}
+
+.key-modules-section .section-title {
+    font-size: 2.25rem !important;
+    font-weight: 700 !important;
+    color: #121f3e !important;
+    margin-bottom: 0.75rem !important;
+    text-align: center !important;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    position: relative !important;
+    z-index: 10 !important;
+}
+
+.key-modules-section .section-subtitle {
+    font-size: 1.125rem !important;
+    color: #6b7280 !important;
+    margin-bottom: 1.5rem !important;
+    text-align: center !important;
+    line-height: 1.6 !important;
+    position: relative !important;
+    z-index: 10 !important;
+}
+
+.module-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 2rem;
+    text-align: center;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    height: 100%;
+}
+
+.module-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+}
+
+.module-card .module-icon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.module-card .module-icon img {
+    max-width: 100%;
+    height: auto;
+}
+
+.module-card h4 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 1rem;
+}
+
+.module-card p {
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+}
+
+.module-card .read-more {
+    color: #ee7212;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+.module-card .read-more:hover {
+    color: #d65a0a;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .key-modules-section {
+        margin-top: -10px;
+    }
+    
+    .module-card {
+        padding: 1.5rem;
+        margin-bottom: 1rem;
+    }
+    
+    .key-modules-section .section-title {
+        font-size: 1.875rem !important;
+    }
+    
+    .key-modules-section .section-subtitle {
+        font-size: 1rem !important;
+    }
+}
+
+@media (max-width: 575px) {
+    .key-modules-section {
+        padding: 20px 0;
+        margin-top: 0;
+    }
+    
+    .key-modules-section .section-title {
+        font-size: 1.5rem !important;
+    }
+    
+    .key-modules-section .section-subtitle {
+        font-size: 0.9rem !important;
+    }
+}
+

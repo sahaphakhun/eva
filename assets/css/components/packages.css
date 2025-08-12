@@ -1,0 +1,394 @@
+/* Packages Page Styles */
+
+/* Page Heading */
+.page-heading {
+    background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+    color: white;
+    padding: 80px 0 60px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.page-heading::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('../images/bg-pattern.svg') repeat;
+    opacity: 0.1;
+}
+
+.page-heading .container {
+    position: relative;
+    z-index: 1;
+}
+
+.page-heading h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    font-weight: 700;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.page-heading p {
+    font-size: 1.25rem;
+    opacity: 0.9;
+    max-width: 800px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+/* Comparison Table */
+.comparison-table {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    overflow: hidden;
+    margin: 40px 0;
+    border: 1px solid #e5e7eb;
+}
+
+.comparison-table table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.comparison-table th {
+    background: var(--primary-color);
+    color: white;
+    padding: 20px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+.comparison-table th:first-child {
+    text-align: left;
+    background: var(--accent-color);
+}
+
+.comparison-table td {
+    padding: 15px 20px;
+    border-bottom: 1px solid #e5e7eb;
+    vertical-align: middle;
+    font-size: 0.95rem;
+}
+
+.comparison-table tr:hover {
+    background: #f8fafc;
+    transition: background-color 0.2s ease;
+}
+
+.comparison-table tr:last-child td {
+    border-bottom: none;
+}
+
+/* Module Headers */
+.module-header {
+    background: #f3f4f6;
+    font-weight: 600;
+    color: var(--primary-color);
+    border-left: 4px solid var(--accent-color);
+}
+
+.module-header h5 {
+    margin: 0;
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Feature Indicators */
+.feature-check {
+    color: #10b981;
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.feature-minus {
+    color: #9ca3af;
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.feature-text {
+    text-align: center;
+    font-weight: 500;
+    color: var(--text-secondary);
+}
+
+/* Contact Buttons */
+.contact-buttons {
+    text-align: center;
+    padding: 20px;
+}
+
+.contact-buttons .btn {
+    min-width: 140px;
+    padding: 12px 24px;
+    font-weight: 600;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.contact-buttons .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+/* FAQ Section */
+.faq-section {
+    background: #f8fafc;
+    padding: 60px 0;
+    position: relative;
+}
+
+.faq-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #e5e7eb, transparent);
+}
+
+.faq-content {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.faq-content .section-title {
+    color: var(--primary-color);
+    margin-bottom: 2rem;
+}
+
+/* Accordion Styles */
+.accordion-item {
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    transition: all 0.3s ease;
+}
+
+.accordion-item:hover {
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.accordion-button {
+    background: white;
+    border: none;
+    padding: 20px;
+    width: 100%;
+    text-align: left;
+    font-weight: 600;
+    color: var(--primary-color);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    padding-right: 60px; /* Add space for the icon */
+}
+
+.accordion-button:hover {
+    background: #f8fafc;
+    color: var(--accent-color);
+}
+
+.accordion-button:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
+}
+
+/* Remove default Bootstrap accordion icons */
+.accordion-button::after {
+    display: none !important;
+    background-image: none !important;
+    background: none !important;
+    content: none !important;
+}
+
+/* Ensure no other Bootstrap accordion styles interfere */
+.accordion-button:not(.collapsed) {
+    background-color: white;
+    box-shadow: none;
+}
+
+/* Custom accordion icons */
+.accordion-button.collapsed::before {
+    content: '+';
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--accent-color);
+    transition: all 0.3s ease;
+}
+
+.accordion-button:not(.collapsed)::before {
+    content: '−';
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--accent-color);
+    transition: all 0.3s ease;
+}
+
+.accordion-body {
+    padding: 0 20px 20px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    font-size: 0.95rem;
+}
+
+.accordion-collapse {
+    transition: all 0.3s ease;
+}
+
+.accordion-collapse.show {
+    animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .page-heading {
+        padding: 60px 0 40px;
+    }
+    
+    .page-heading h1 {
+        font-size: 2rem;
+    }
+    
+    .page-heading p {
+        font-size: 1.1rem;
+    }
+    
+    .comparison-table {
+        font-size: 0.9rem;
+        margin: 20px 0;
+    }
+    
+    .comparison-table th,
+    .comparison-table td {
+        padding: 10px;
+    }
+    
+    .comparison-table th {
+        font-size: 1rem;
+    }
+    
+    .module-header h5 {
+        font-size: 1rem;
+    }
+    
+    .contact-buttons .btn {
+        min-width: 120px;
+        padding: 10px 20px;
+        font-size: 0.9rem;
+    }
+    
+    .faq-section {
+        padding: 40px 0;
+    }
+    
+    .accordion-button {
+        padding: 15px 50px 15px 15px; /* Adjust padding for mobile */
+        font-size: 0.95rem;
+    }
+    
+    .accordion-body {
+        padding: 0 15px 15px;
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .page-heading h1 {
+        font-size: 1.75rem;
+    }
+    
+    .page-heading p {
+        font-size: 1rem;
+    }
+    
+    .comparison-table {
+        font-size: 0.85rem;
+    }
+    
+    .comparison-table th,
+    .comparison-table td {
+        padding: 8px;
+    }
+    
+    .feature-check,
+    .feature-minus {
+        font-size: 1rem;
+    }
+    
+    .contact-buttons {
+        padding: 15px;
+    }
+    
+    .contact-buttons .btn {
+        min-width: 100px;
+        padding: 8px 16px;
+        font-size: 0.85rem;
+    }
+    
+    /* Adjust icon position for mobile */
+    .accordion-button.collapsed::before,
+    .accordion-button:not(.collapsed)::before {
+        right: 15px;
+        font-size: 1.3rem;
+    }
+}
+
+/* Print Styles */
+@media print {
+    .page-heading {
+        background: white !important;
+        color: black !important;
+        padding: 20px 0;
+    }
+    
+    .comparison-table {
+        box-shadow: none;
+        border: 1px solid #000;
+    }
+    
+    .comparison-table th {
+        background: #f0f0f0 !important;
+        color: black !important;
+    }
+    
+    .faq-section {
+        background: white !important;
+    }
+    
+    .contact-buttons {
+        display: none;
+    }
+}

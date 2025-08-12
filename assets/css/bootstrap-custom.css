@@ -1,0 +1,297 @@
+/* Bootstrap Custom Styles for EvA Cloud */
+
+/* Navbar Customization */
+.navbar-header-menu {
+    background: rgba(18, 31, 62, 0.9) !important;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+}
+
+.navbar-header-menu.scrolled {
+    background: rgba(255,255,255,0.95) !important;
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+}
+
+.navbar-brand {
+    font-family: var(--ff-bold);
+    font-size: 1.5rem;
+    color: #ffffff !important;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.navbar-header-menu.scrolled .navbar-brand {
+    color: #121f3e !important;
+}
+
+.navbar-brand:hover {
+    color: #fbbf24 !important;
+}
+
+.navbar-header-menu.scrolled .navbar-brand:hover {
+    color: #f59e0b !important;
+}
+
+.navbar-brand img {
+    height: 40px;
+    margin-right: 10px;
+}
+
+/* Navigation Links */
+.nav-link {
+    color: #ffffff !important;
+    font-family: var(--ff-medium);
+    font-size: var(--body-text-1);
+    transition: color 0.3s ease;
+    position: relative;
+    padding: 0.5rem 1rem !important;
+}
+
+.navbar-header-menu.scrolled .nav-link {
+    color: #121f3e !important;
+}
+
+.nav-link:hover,
+.nav-link.active {
+    color: #fbbf24 !important;
+}
+
+.navbar-header-menu.scrolled .nav-link:hover,
+.navbar-header-menu.scrolled .nav-link.active {
+    color: #f59e0b !important;
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background: #fbbf24;
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
+}
+
+.navbar-header-menu.scrolled .nav-link::after {
+    background: #f59e0b;
+}
+
+.nav-link:hover::after,
+.nav-link.active::after {
+    width: 80%;
+}
+
+/* Dropdown Menus */
+.dropdown-menu {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: none;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    border-radius: 8px;
+    padding: 0.5rem 0;
+    margin-top: 0.5rem;
+}
+
+.dropdown-item {
+    color: #121f3e;
+    padding: 0.75rem 1.5rem;
+    transition: all 0.3s ease;
+    font-family: var(--ff-medium);
+}
+
+.dropdown-item:hover {
+    background: rgba(251, 191, 36, 0.1);
+    color: #f59e0b;
+    transform: translateX(5px);
+}
+
+.dropdown-divider {
+    border-color: rgba(18, 31, 62, 0.1);
+    margin: 0.5rem 0;
+}
+
+/* Buttons */
+.btn-reg {
+    padding: 0.5rem 1.5rem;
+    border-radius: 25px;
+    font-weight: 500;
+    font-family: var(--ff-medium);
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btn-secondary {
+    background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+    border: none;
+    color: #121f3e;
+}
+
+.btn-secondary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(251, 191, 36, 0.4);
+    color: #121f3e;
+}
+
+/* Navbar Toggler */
+.navbar-toggler {
+    border: none;
+    padding: 0.25rem 0.5rem;
+}
+
+.navbar-toggler:focus {
+    box-shadow: none;
+}
+
+.navbar-toggler svg {
+    fill: #ffffff;
+    transition: fill 0.3s ease;
+}
+
+.navbar-header-menu.scrolled .navbar-toggler svg {
+    fill: #121f3e;
+}
+
+.navbar-toggler:hover svg {
+    fill: #fbbf24;
+}
+
+.navbar-header-menu.scrolled .navbar-toggler:hover svg {
+    fill: #f59e0b;
+}
+
+/* Mobile Menu */
+.header-menu-options {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.offcanvas-header {
+    border-bottom: 1px solid rgba(18, 31, 62, 0.1);
+    padding: 1.5rem;
+}
+
+.offcanvas-title img {
+    height: 35px;
+    width: auto;
+}
+
+.menu-option {
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid rgba(18, 31, 62, 0.1);
+    color: #121f3e;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.menu-option:hover {
+    color: #f59e0b;
+    background: rgba(251, 191, 36, 0.05);
+}
+
+.dropdown-toggle {
+    color: #121f3e;
+    font-weight: 600;
+    text-decoration: none;
+    display: block;
+    padding: 0.5rem 0;
+    position: relative;
+}
+
+/* Removed ::after pseudo-element to prevent duplicate arrows */
+
+/* Removed aria-expanded styles since ::after was removed */
+
+/* Tab View */
+.tab-view {
+    display: none;
+}
+
+/* Responsive */
+@media (max-width: 991px) {
+    .tab-view {
+        display: block;
+    }
+    
+    .navbar-collapse {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+    }
+    
+    .navbar-brand img {
+        height: 30px;
+        margin-right: 8px;
+    }
+}
+
+@media (max-width: 768px) {
+    .navbar-brand img {
+        height: 25px;
+        margin-right: 5px;
+    }
+    
+    .btn-reg {
+        font-size: 0.875rem;
+        padding: 0.4rem 1rem;
+    }
+    
+    .header-menu-options {
+        width: 80%;
+    }
+}
+
+/* Modal Styles */
+.modal-content {
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+.modal-header {
+    border-bottom: 1px solid rgba(18, 31, 62, 0.1);
+    padding: 1.5rem;
+}
+
+.modal-title {
+    color: #121f3e;
+    font-weight: 600;
+}
+
+.modal-body {
+    padding: 1.5rem;
+}
+
+/* Utility Classes */
+.c-pointer {
+    cursor: pointer;
+}
+
+.fade-in-up {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
