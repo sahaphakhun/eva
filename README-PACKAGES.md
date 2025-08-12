@@ -1,198 +1,198 @@
-# EvA Cloud Packages Page
+# หน้าแพ็คเกจ EvA Cloud
 
-## Overview
-The packages page (`/pages/packages.html`) provides a comprehensive comparison between EvA Cloud Standard and Professional editions, helping potential customers understand the differences and choose the right plan for their business needs.
+## ภาพรวม
+หน้าแพ็คเกจ (`/pages/packages.html`) ให้การเปรียบเทียบที่ครอบคลุมระหว่าง EvA Cloud Standard และ Professional editions ช่วยให้ลูกค้าที่มีศักยภาพเข้าใจความแตกต่างและเลือกแผนที่เหมาะสมกับความต้องการทางธุรกิจของพวกเขา
 
-## Features
+## คุณสมบัติ
 
-### 1. Page Heading
-- **Gradient Background**: Uses a modern gradient from primary to accent colors
-- **Responsive Design**: Adapts to different screen sizes
-- **Clear Value Proposition**: Explains the purpose of the comparison
+### 1. หัวข้อหน้า
+- **พื้นหลังแบบ Gradient**: ใช้ gradient สมัยใหม่จากสีหลักไปยังสีเน้น
+- **การออกแบบที่ตอบสนอง**: ปรับตัวตามขนาดหน้าจอที่แตกต่างกัน
+- **ข้อเสนอคุณค่าที่ชัดเจน**: อธิบายวัตถุประสงค์ของการเปรียบเทียบ
 
-### 2. Comparison Table
-The main feature comparison table includes:
+### 2. ตารางเปรียบเทียบ
+ตารางเปรียบเทียบคุณสมบัติหลักประกอบด้วย:
 
-#### Module Categories:
-- **First Call to Sales Order**: Basic quotation and CRM features
-- **Sales Order to Dispatch**: Production and management features  
-- **Dispatch to Final Handover**: Installation and quality control features
+#### หมวดหมู่โมดูล:
+- **จากการโทรครั้งแรกถึงใบสั่งซื้อ**: คุณสมบัติใบเสนอราคาและ CRM พื้นฐาน
+- **จากใบสั่งซื้อถึงการจัดส่ง**: คุณสมบัติการผลิตและการจัดการ
+- **จากการจัดส่งถึงการส่งมอบขั้นสุดท้าย**: คุณสมบัติการติดตั้งและการควบคุมคุณภาพ
 
-#### Feature Indicators:
-- ✅ **Green Checkmark**: Feature available
-- − **Gray Minus**: Feature not available
-- **Text Values**: Specific limits or pricing information
+#### ตัวบ่งชี้คุณสมบัติ:
+- ✅ **เครื่องหมายถูกสีเขียว**: คุณสมบัติที่มีให้
+- − **เครื่องหมายลบสีเทา**: คุณสมบัติที่ไม่มีให้
+- **ค่าข้อความ**: ข้อจำกัดเฉพาะหรือข้อมูลราคา
 
-#### Key Features Compared:
-- Quotation Management & Revisioning
-- 3D Design Configurator
-- Global Editing Option
-- Multiple Quotation Formats
-- Project Site Geo Tagging
-- Cost Analysis Reports
-- Window Cross-Sectional Drawings
-- Sales Order Management
-- MIS Analytical Reports
-- Project Document Upload Space
-- Integration Options (SAP/ORACLE/3rd Party ERP, SMS/WhatsApp, 3D Model Link)
-- Raw Material Order Reports
-- Profile & Glass Cutting Reports
-- Profile Optimization
-- Off-Cut Management Module
-- Create your own Hardware
-- Pre-Production Survey Module
-- Purchase Order Management
-- Inventory Management Module
-- Batch Management
-- Production Scheduling
-- Shop Floor Management
-- Pre-Delivery Inspection
-- Dispatch Management
-- Project Tracking
-- Production MIS Reports
-- Machine Integration
-- Installation Management Module
-- Post Installation Quality Check
+#### คุณสมบัติหลักที่เปรียบเทียบ:
+- การจัดการใบเสนอราคาและการแก้ไข
+- คอนฟิกูเรเตอร์การออกแบบ 3D
+- ตัวเลือกการแก้ไขแบบทั่วโลก
+- รูปแบบใบเสนอราคาหลายแบบ
+- การติดแท็กตำแหน่งที่ตั้งโปรเจ็กต์
+- รายงานการวิเคราะห์ต้นทุน
+- ภาพวาดแบบตัดขวางหน้าต่าง
+- การจัดการใบสั่งซื้อ
+- รายงานการวิเคราะห์ MIS
+- พื้นที่อัปโหลดเอกสารโปรเจ็กต์
+- ตัวเลือกการรวม (SAP/ORACLE/ERP ของบุคคลที่ 3, SMS/WhatsApp, ลิงก์โมเดล 3D)
+- รายงานการสั่งซื้อวัตถุดิบ
+- รายงานการตัดโปรไฟล์และกระจก
+- การปรับแต่งโปรไฟล์
+- โมดูลการจัดการเศษวัสดุ
+- สร้างฮาร์ดแวร์ของคุณเอง
+- โมดูลการสำรวจก่อนการผลิต
+- การจัดการใบสั่งซื้อ
+- โมดูลการจัดการสินค้าคงคลัง
+- การจัดการชุดงาน
+- การจัดตารางการผลิต
+- การจัดการหน้างาน
+- การตรวจสอบก่อนการส่งมอบ
+- การจัดการการจัดส่ง
+- การติดตามโปรเจ็กต์
+- รายงาน MIS การผลิต
+- การรวมเข้ากับเครื่องจักร
+- โมดูลการจัดการการติดตั้ง
+- การตรวจสอบคุณภาพหลังการติดตั้ง
 
-### 3. FAQ Section
-Interactive accordion-style FAQ with common questions:
-- Difference between Standard and Professional packages
-- Database inclusion options
-- License upgrade possibilities
-- Multiple version purchases
-- License delivery timeline
+### 3. ส่วนคำถามที่พบบ่อย
+คำถามที่พบบ่อยแบบ accordion ที่โต้ตอบได้พร้อมคำถามทั่วไป:
+- ความแตกต่างระหว่างแพ็คเกจ Standard และ Professional
+- ตัวเลือกการรวมฐานข้อมูล
+- ความเป็นไปได้ในการอัปเกรดลิขสิทธิ์
+- การซื้อหลายเวอร์ชัน
+- ระยะเวลาการส่งมอบลิขสิทธิ์
 
-### 4. Contact Buttons
-- Direct contact buttons for each package
-- Call-to-action for immediate engagement
+### 4. ปุ่มติดต่อ
+- ปุ่มติดต่อโดยตรงสำหรับแต่ละแพ็คเกจ
+- Call-to-action สำหรับการมีส่วนร่วมทันที
 
-## Technical Implementation
+## การใช้งานทางเทคนิค
 
-### File Structure:
+### โครงสร้างไฟล์:
 ```
 pages/
-├── packages.html                    # Main packages page
+├── packages.html                    # หน้าแพ็คเกจหลัก
 assets/
 ├── css/
 │   └── components/
-│       └── packages.css            # Dedicated CSS for packages page
+│       └── packages.css            # CSS เฉพาะสำหรับหน้าแพ็คเกจ
 ```
 
-### CSS Features:
-- **Responsive Design**: Mobile-first approach
-- **Modern Styling**: Clean, professional appearance
-- **Interactive Elements**: Hover effects and transitions
-- **Accessibility**: Proper contrast and focus states
-- **Print Styles**: Optimized for printing
+### คุณสมบัติ CSS:
+- **การออกแบบที่ตอบสนอง**: แนวทาง mobile-first
+- **การจัดรูปแบบสมัยใหม่**: ลักษณะที่สะอาดและเป็นมืออาชีพ
+- **องค์ประกอบแบบโต้ตอบ**: เอฟเฟกต์ hover และ transitions
+- **การเข้าถึง**: ความคมชัดที่เหมาะสมและสถานะ focus
+- **สไตล์การพิมพ์**: ปรับให้เหมาะสมสำหรับการพิมพ์
 
-### JavaScript Features:
-- **Accordion Functionality**: Custom implementation for FAQ section
-- **Smooth Animations**: CSS transitions and animations
-- **Event Handling**: Proper click and focus management
+### คุณสมบัติ JavaScript:
+- **ฟังก์ชัน Accordion**: การใช้งานแบบกำหนดเองสำหรับส่วนคำถามที่พบบ่อย
+- **แอนิเมชันที่นุ่มนวล**: CSS transitions และ animations
+- **การจัดการเหตุการณ์**: การจัดการการคลิกและ focus ที่เหมาะสม
 
-## Navigation Integration
+## การรวมเข้ากับการนำทาง
 
-### Header Menu:
-- Added "เปรียบเทียบรุ่น" (Compare Editions) link in the Products dropdown
-- Links directly to `/pages/packages.html`
+### เมนูส่วนหัว:
+- เพิ่มลิงก์ "เปรียบเทียบรุ่น" ในเมนูผลิตภัณฑ์
+- ลิงก์ไปยัง `/pages/packages.html` โดยตรง
 
-### Cross-Page Links:
-- **Homepage**: Added "Compare Editions" button in CTA section
-- **EvA Cloud Standard**: Added comparison link in CTA section
-- **EvA Cloud Professional**: Can be added similarly
+### ลิงก์ข้ามหน้า:
+- **หน้าหลัก**: เพิ่มปุ่ม "เปรียบเทียบรุ่น" ในส่วน CTA
+- **EvA Cloud Standard**: เพิ่มลิงก์เปรียบเทียบในส่วน CTA
+- **EvA Cloud Professional**: สามารถเพิ่มได้ในลักษณะเดียวกัน
 
-## Responsive Design
+## การออกแบบที่ตอบสนอง
 
 ### Breakpoints:
-- **Desktop**: Full table layout with all features visible
-- **Tablet (768px)**: Adjusted font sizes and padding
-- **Mobile (576px)**: Optimized for small screens with reduced padding
+- **เดสก์ท็อป**: เลย์เอาต์ตารางเต็มรูปแบบพร้อมคุณสมบัติทั้งหมดที่มองเห็นได้
+- **แท็บเล็ต (768px)**: ปรับขนาดฟอนต์และ padding
+- **มือถือ (576px)**: ปรับให้เหมาะสมสำหรับหน้าจอขนาดเล็กพร้อม padding ที่ลดลง
 
-### Mobile Optimizations:
-- Smaller font sizes for better readability
-- Reduced padding to maximize content space
-- Touch-friendly button sizes
-- Simplified table layout
+### การปรับให้เหมาะสมสำหรับมือถือ:
+- ขนาดฟอนต์ที่เล็กลงเพื่อการอ่านที่ดีขึ้น
+- ลด padding เพื่อเพิ่มพื้นที่เนื้อหาให้สูงสุด
+- ขนาดปุ่มที่เหมาะสำหรับการสัมผัส
+- เลย์เอาต์ตารางที่เรียบง่าย
 
-## SEO Optimization
+## การปรับให้เหมาะสมสำหรับ SEO
 
 ### Meta Tags:
-- **Title**: "Packages - Compare EvA Cloud Editions"
-- **Description**: Comprehensive comparison description
-- **Keywords**: Relevant search terms for package comparison
-- **Open Graph**: Social media sharing optimization
+- **Title**: "แพ็คเกจ - เปรียบเทียบรุ่น EvA Cloud"
+- **Description**: คำอธิบายการเปรียบเทียบที่ครอบคลุม
+- **Keywords**: คำค้นหาที่เกี่ยวข้องสำหรับการเปรียบเทียบแพ็คเกจ
+- **Open Graph**: การปรับให้เหมาะสมสำหรับการแชร์ในโซเชียลมีเดีย
 
-### Page Structure:
-- Semantic HTML with proper heading hierarchy
-- Alt text for images
-- Proper link structure
-- Clean URL structure
+### โครงสร้างหน้า:
+- HTML ที่มีความหมายพร้อมลำดับหัวข้อที่เหมาะสม
+- Alt text สำหรับรูปภาพ
+- โครงสร้างลิงก์ที่เหมาะสม
+- โครงสร้าง URL ที่สะอาด
 
-## Future Enhancements
+## การปรับปรุงในอนาคต
 
-### Potential Improvements:
-1. **Interactive Comparison**: Add feature filtering options
-2. **Pricing Information**: Include pricing details if available
-3. **Feature Details**: Expandable feature descriptions
-4. **Customer Testimonials**: Add testimonials for each package
-5. **Integration Examples**: Show integration capabilities
-6. **Video Demos**: Embed demo videos for each package
-7. **Live Chat**: Add chat support for package questions
-8. **Calculator**: ROI calculator for package comparison
+### การปรับปรุงที่อาจเป็นไปได้:
+1. **การเปรียบเทียบแบบโต้ตอบ**: เพิ่มตัวเลือกการกรองคุณสมบัติ
+2. **ข้อมูลราคา**: รวมรายละเอียดราคาหากมี
+3. **รายละเอียดคุณสมบัติ**: คำอธิบายคุณสมบัติที่ขยายได้
+4. **เสียงจากลูกค้า**: เพิ่มเสียงจากลูกค้าสำหรับแต่ละแพ็คเกจ
+5. **ตัวอย่างการรวม**: แสดงความสามารถในการรวม
+6. **วิดีโอเดโม**: ฝังวิดีโอเดโมสำหรับแต่ละแพ็คเกจ
+7. **แชทสด**: เพิ่มการสนับสนุนแชทสำหรับคำถามเกี่ยวกับแพ็คเกจ
+8. **เครื่องคิดเลข**: เครื่องคิดเลข ROI สำหรับการเปรียบเทียบแพ็คเกจ
 
-### Technical Enhancements:
-1. **Progressive Web App**: Add PWA capabilities
-2. **Analytics**: Track user interaction with comparison table
-3. **A/B Testing**: Test different table layouts
-4. **Performance**: Optimize loading times
-5. **Accessibility**: Enhance WCAG compliance
+### การปรับปรุงทางเทคนิค:
+1. **Progressive Web App**: เพิ่มความสามารถ PWA
+2. **Analytics**: ติดตามการโต้ตอบของผู้ใช้กับตารางเปรียบเทียบ
+3. **A/B Testing**: ทดสอบเลย์เอาต์ตารางที่แตกต่างกัน
+4. **ประสิทธิภาพ**: ปรับให้เหมาะสมสำหรับเวลาในการโหลด
+5. **การเข้าถึง**: เพิ่มการปฏิบัติตาม WCAG
 
-## Maintenance
+## การบำรุงรักษา
 
-### Regular Updates:
-- Keep feature comparison up to date
-- Update FAQ with new common questions
-- Monitor user feedback and questions
-- Update pricing and limits as needed
-- Test cross-browser compatibility
+### การอัปเดตเป็นประจำ:
+- รักษาการเปรียบเทียบคุณสมบัติให้ทันสมัย
+- อัปเดตคำถามที่พบบ่อยด้วยคำถามใหม่
+- ติดตามข้อเสนอแนะและคำถามของผู้ใช้
+- อัปเดตราคาและข้อจำกัดตามที่จำเป็น
+- ทดสอบความเข้ากันได้ข้ามเบราว์เซอร์
 
-### Content Management:
-- Easy to update feature lists
-- Modular CSS for easy styling changes
-- Clear documentation for content updates
-- Version control for all changes
+### การจัดการเนื้อหา:
+- ง่ายต่อการอัปเดตรายการคุณสมบัติ
+- CSS แบบโมดูลาร์สำหรับการเปลี่ยนแปลงการจัดรูปแบบที่ง่าย
+- เอกสารที่ชัดเจนสำหรับการอัปเดตเนื้อหา
+- การควบคุมเวอร์ชันสำหรับการเปลี่ยนแปลงทั้งหมด
 
-## Browser Support
+## การสนับสนุนเบราว์เซอร์
 
-### Tested Browsers:
-- Chrome (latest)
-- Firefox (latest)
-- Safari (latest)
-- Edge (latest)
-- Mobile browsers (iOS Safari, Chrome Mobile)
+### เบราว์เซอร์ที่ทดสอบแล้ว:
+- Chrome (ล่าสุด)
+- Firefox (ล่าสุด)
+- Safari (ล่าสุด)
+- Edge (ล่าสุด)
+- เบราว์เซอร์มือถือ (iOS Safari, Chrome Mobile)
 
 ### Fallbacks:
-- Graceful degradation for older browsers
-- CSS fallbacks for modern features
-- JavaScript error handling
-- Mobile-responsive design
+- การลดลงอย่างนุ่มนวลสำหรับเบราว์เซอร์เก่า
+- CSS fallbacks สำหรับคุณสมบัติสมัยใหม่
+- การจัดการข้อผิดพลาด JavaScript
+- การออกแบบที่ตอบสนองสำหรับมือถือ
 
-## Performance
+## ประสิทธิภาพ
 
-### Optimization:
-- Minified CSS and JavaScript
-- Optimized images
-- Efficient CSS selectors
-- Minimal DOM manipulation
-- Fast loading times
+### การปรับให้เหมาะสม:
+- CSS และ JavaScript ที่บีบอัดแล้ว
+- รูปภาพที่ปรับให้เหมาะสมแล้ว
+- CSS selectors ที่มีประสิทธิภาพ
+- การจัดการ DOM ที่น้อยที่สุด
+- เวลาในการโหลดที่เร็ว
 
-### Metrics:
-- Page load time: < 3 seconds
-- First contentful paint: < 1.5 seconds
-- Largest contentful paint: < 2.5 seconds
+### ตัวชี้วัด:
+- เวลาในการโหลดหน้า: < 3 วินาที
+- First contentful paint: < 1.5 วินาที
+- Largest contentful paint: < 2.5 วินาที
 - Cumulative layout shift: < 0.1
 
 ---
 
-*Last updated: [Current Date]*
-*Version: 1.0*
+*อัปเดตล่าสุด: [วันที่ปัจจุบัน]*
+*เวอร์ชัน: 1.0*

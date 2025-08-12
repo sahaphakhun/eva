@@ -1,21 +1,9 @@
-MIT License
+ใบอนุญาต MIT
 
-Copyright (c) 2024 EvA Cloud Team
+ลิขสิทธิ์ (c) 2024 ทีม EvA Cloud
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+ได้รับอนุญาตให้ใช้ คัดลอก แก้ไข รวม เผยแพร่ แจกจ่าย อนุญาตให้ใช้ซ้อน และ/หรือขายสำเนาของซอฟต์แวร์นี้และเอกสารที่เกี่ยวข้อง ("ซอฟต์แวร์") โดยไม่มีการจำกัดใดๆ รวมถึงสิทธิ์ในการใช้ คัดลอก แก้ไข รวม เผยแพร่ แจกจ่าย อนุญาตให้ใช้ซ้อน และ/หรือขายสำเนาของซอฟต์แวร์ และอนุญาตให้บุคคลที่ได้รับซอฟต์แวร์นี้ทำเช่นเดียวกัน โดยมีเงื่อนไขดังนี้:
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+ข้อความแจ้งลิขสิทธิ์ข้างต้นและข้อความแจ้งการอนุญาตนี้จะต้องรวมอยู่ในสำเนาทั้งหมดหรือส่วนสำคัญของซอฟต์แวร์
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+ซอฟต์แวร์นี้จัดให้ "ตามที่เป็นอยู่" โดยไม่มีการรับประกันใดๆ ไม่ว่าจะเป็นการแสดงออกหรือโดยนัย รวมถึงแต่ไม่จำกัดเฉพาะการรับประกันความสามารถในการขาย ความเหมาะสมสำหรับวัตถุประสงค์เฉพาะ และการไม่ละเมิดลิขสิทธิ์ ในกรณีใดๆ ผู้เขียนหรือผู้ถือลิขสิทธิ์จะไม่รับผิดชอบต่อการเรียกร้อง ความเสียหาย หรือความรับผิดชอบอื่นๆ ไม่ว่าจะเป็นการกระทำตามสัญญา การละเมิด หรืออื่นๆ ที่เกิดจาก หรือเกี่ยวข้องกับ หรือเชื่อมโยงกับซอฟต์แวร์ หรือการใช้หรือการจัดการอื่นๆ ในซอฟต์แวร์

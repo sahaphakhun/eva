@@ -92,23 +92,25 @@
 
 /* Responsive Design */
 @media (max-width: 768px) {
-    .trusted-brands-section .section-title {
-        font-size: 2rem;
-    }
-    
-    .brands-grid {
-        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-        gap: 1rem;
-    }
-    
-    .brand-card {
-        padding: 1rem;
-        min-height: 100px;
-    }
+    .trusted-brands-section { padding: 40px 0; }
+    .trusted-brands-section .section-title { font-size: 1.65rem; margin-bottom: 1.5rem; }
+    .brand-tabs { gap: 0.5rem; margin-bottom: 1.5rem; }
+    .tab-btn { padding: 0.5rem 1rem; font-size: 0.9rem; }
+    .brands-grid { grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 0.75rem; }
+    .brand-card { padding: 0.75rem; min-height: 84px; }
+    .brand-card img { max-height: 56px; }
     
     /* Corporate Clients Grid - 1 column on mobile */
     #corporate-clients {
         grid-template-columns: 1fr;
-        max-width: 400px;
+        max-width: 360px;
     }
+}
+
+@media (max-width: 575.98px) {
+    .trusted-brands-section { padding: 32px 0; }
+    .trusted-brands-section .section-title { font-size: 1.5rem; }
+    .brands-grid { grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 0.5rem; }
+    .brand-card { padding: 0.6rem; min-height: 76px; }
+    .brand-card img { max-height: 48px; }
 }

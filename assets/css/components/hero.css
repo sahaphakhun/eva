@@ -419,3 +419,43 @@
         height: 10px;
     }
 }
+
+/* ===== Mobile-first optimizations without affecting desktop ===== */
+@media (max-width: 991.98px) {
+  .section.landing { min-height: 40vh; }
+  .section.landing .section-inner { padding: 1.25rem 0; margin-top: 64px; }
+  .section.landing .slide { min-height: auto; }
+  .section.landing .heading-1 { font-size: 2rem; margin-bottom: 0.75rem; }
+  .section.landing h6 { font-size: 1rem; margin-bottom: 1rem; }
+  .section.landing .btn-reg { padding: 0.55rem 1.25rem; }
+  .section.landing .right { margin-top: 1.25rem; }
+  .section.landing .device-mockups { height: 320px; }
+  .section.landing .desktop-monitor { width: 340px; height: 220px; }
+  .section.landing .tablet { width: 300px; height: 200px; }
+  .section.landing .smartphone { width: 280px; height: 190px; }
+  .section.landing .laptop { width: 300px; height: 200px; }
+  .section.landing .indicators { margin-top: 0.75rem; padding: 0.5rem 0; }
+}
+
+@media (max-width: 767.98px) {
+  .section.landing { min-height: 36vh; }
+  .section.landing .section-inner { padding: 1rem 0; margin-top: 58px; }
+  .section.landing .heading-1 { font-size: 1.6rem; }
+  .section.landing h6 { font-size: 0.95rem; }
+  .section.landing .device-mockups { height: 280px; }
+  .section.landing .desktop-monitor { width: 280px; height: 185px; }
+  .section.landing .tablet { width: 260px; height: 172px; }
+  .section.landing .smartphone { width: 240px; height: 160px; }
+  .section.landing .laptop { width: 260px; height: 172px; }
+}
+
+@media (max-width: 575.98px) {
+  .section.landing { min-height: 34vh; }
+  .section.landing .section-inner { padding: 0.75rem 0; margin-top: 56px; }
+  .section.landing .heading-1 { font-size: 1.5rem; }
+  .section.landing .device-mockups { height: 240px; }
+  .section.landing .desktop-monitor { width: 230px; height: 150px; }
+  .section.landing .tablet { width: 220px; height: 145px; }
+  .section.landing .smartphone { width: 200px; height: 136px; }
+  .section.landing .laptop { width: 220px; height: 145px; }
+}

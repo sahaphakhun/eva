@@ -118,6 +118,32 @@ class App {
 
             // แทนที่ head content
             headContainer.innerHTML = processedHead;
+
+            // ทำให้สคริปต์ใน head ถูกประมวลผลใหม่ (เช่น bootstrap ที่มี defer)
+            this.reactivateHeadScripts(headContainer);
+        }
+    }
+
+    /**
+     * ทำให้แท็ก <script> ที่ถูกเพิ่มด้วย innerHTML ทำงานอีกครั้ง
+     */
+    reactivateHeadScripts(headEl) {
+        try {
+            const scripts = Array.from(headEl.querySelectorAll('script'));
+            scripts.forEach((oldScript) => {
+                const newScript = document.createElement('script');
+                // คัดลอกแอตทริบิวต์ทั้งหมด
+                for (const attr of oldScript.attributes) {
+                    newScript.setAttribute(attr.name, attr.value);
+                }
+                // คัดลอกโค้ดภายใน (ถ้าไม่มี src)
+                if (!oldScript.src && oldScript.textContent) {
+                    newScript.textContent = oldScript.textContent;
+                }
+                oldScript.replaceWith(newScript);
+            });
+        } catch (e) {
+            console.warn('Failed to reactivate head scripts:', e);
         }
     }
 
@@ -297,8 +323,10 @@ class App {
         const mobileMenu = document.getElementById('staticBackdropMenu');
         
         if (mobileMenuToggle && mobileMenu) {
+            // กันสถานะค้างจากรอบก่อน ๆ
+            this.resetMobileMenuState();
+
             mobileMenuToggle.addEventListener('click', () => {
-                document.body.classList.toggle('mobile-menu-open');
                 
                 // ตรวจสอบว่า Bootstrap พร้อมใช้งานหรือไม่
                 if (this.isBootstrapAvailable()) {
@@ -324,6 +352,35 @@ class App {
                 }
             });
 
+            // ปิดเมนูเมื่อกดลิงก์/ปุ่มภายใน
+            const closeTargets = mobileMenu.querySelectorAll('[data-bs-dismiss="offcanvas"], .offcanvas-body .nav-link, .offcanvas .btn-reg');
+            closeTargets.forEach((el) => {
+                el.addEventListener('click', () => {
+                    if (this.isBootstrapAvailable()) {
+                        try {
+                            const bsOffcanvas = bootstrap.Offcanvas.getInstance(mobileMenu) || new bootstrap.Offcanvas(mobileMenu);
+                            bsOffcanvas.hide();
+                        } catch (error) {
+                            this.hideMobileMenuFallback(mobileMenu);
+                        }
+                    } else {
+                        this.hideMobileMenuFallback(mobileMenu);
+                    }
+                });
+            });
+
+            // sync สถานะ body กับอีเวนต์ของ Bootstrap offcanvas
+            if (this.isBootstrapAvailable()) {
+                try {
+                    mobileMenu.addEventListener('shown.bs.offcanvas', () => {
+                        document.body.classList.add('mobile-menu-open');
+                    });
+                    mobileMenu.addEventListener('hidden.bs.offcanvas', () => {
+                        this.resetMobileMenuState();
+                    });
+                } catch (_) { /* noop */ }
+            }
+
             // ปิด menu เมื่อคลิกนอก menu
             mobileMenu.addEventListener('click', (e) => {
                 if (e.target === mobileMenu) {
@@ -344,6 +401,11 @@ class App {
                     }
                 }
             });
+
+            // ล้างสถานะค้างเมื่อมีการเปลี่ยนขนาดจอ/หมุนจอ
+            const cleanup = () => this.resetMobileMenuState();
+            window.addEventListener('resize', cleanup);
+            window.addEventListener('orientationchange', cleanup);
         }
     }
 
@@ -370,6 +432,21 @@ class App {
         document.body.classList.remove('offcanvas-open');
         document.body.classList.remove('mobile-menu-open');
         this.removeBackdrop();
+    }
+
+    /**
+     * รีเซ็ตสถานะเมนูและ backdrop ที่อาจค้างอยู่ เพื่อป้องกันหน้าเลื่อนไม่ได้
+     */
+    resetMobileMenuState() {
+        try {
+            const mobileMenu = document.getElementById('staticBackdropMenu');
+            if (mobileMenu) {
+                mobileMenu.classList.remove('show');
+            }
+            document.body.classList.remove('offcanvas-open');
+            document.body.classList.remove('mobile-menu-open');
+            this.removeBackdrop();
+        } catch (_) { /* noop */ }
     }
 
     /**
@@ -754,12 +831,14 @@ class App {
             .offcanvas.show {
                 transform: translateX(0) !important;
                 visibility: visible !important;
+                z-index: 1045;
             }
             
             .offcanvas {
                 transform: translateX(-100%);
                 transition: transform 0.3s ease-in-out;
                 visibility: hidden;
+                z-index: 1045;
             }
             
             .offcanvas-backdrop {
@@ -774,6 +853,8 @@ class App {
             
             .offcanvas-open {
                 overflow: hidden;
+                touch-action: none;
+                overscroll-behavior: contain;
             }
             
             /* Dropdown styles for better functionality */
