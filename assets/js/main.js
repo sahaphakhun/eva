@@ -8,10 +8,13 @@ import './components/ComponentLoader.js';
 
 // Global error handler for Bootstrap issues
 window.addEventListener('error', (event) => {
-    if (event.error && event.error.message && event.error.message.includes('backdrop')) {
-        console.warn('Bootstrap Offcanvas error detected, using fallback mode');
+    if (event.error && event.error.message && 
+        (event.error.message.includes('backdrop') || 
+         event.error.message.includes('Cannot read properties of undefined'))) {
+        console.warn('Bootstrap error detected, using fallback mode:', event.error.message);
         // Prevent the error from breaking the page
         event.preventDefault();
+        return false;
     }
 });
 
@@ -64,9 +67,16 @@ class App {
      * ตรวจสอบว่า Bootstrap พร้อมใช้งานหรือไม่
      */
     isBootstrapAvailable() {
-        return typeof bootstrap !== 'undefined' && 
-               bootstrap.Offcanvas && 
-               typeof bootstrap.Offcanvas.getInstance === 'function';
+        try {
+            return typeof bootstrap !== 'undefined' && 
+                   bootstrap.Offcanvas && 
+                   typeof bootstrap.Offcanvas.getInstance === 'function' &&
+                   bootstrap.Dropdown &&
+                   typeof bootstrap.Dropdown.getInstance === 'function';
+        } catch (error) {
+            console.warn('Bootstrap check failed:', error);
+            return false;
+        }
     }
 
     /**
@@ -565,6 +575,37 @@ class App {
         setTimeout(() => {
             const dropdowns = document.querySelectorAll('.dropdown');
             
+            // ตรวจสอบว่า Bootstrap พร้อมใช้งานหรือไม่
+            if (this.isBootstrapAvailable()) {
+                try {
+                    // ใช้ Bootstrap Dropdown
+                    dropdowns.forEach(dropdown => {
+                        const toggle = dropdown.querySelector('.dropdown-toggle');
+                        if (toggle) {
+                            // ใช้ Bootstrap Dropdown API
+                            const bsDropdown = new bootstrap.Dropdown(toggle);
+                            
+                            // จัดการการคลิกเมนู items
+                            const menuItems = dropdown.querySelectorAll('.dropdown-item');
+                            menuItems.forEach(item => {
+                                item.addEventListener('click', (e) => {
+                                    e.stopPropagation();
+                                    const href = item.getAttribute('href');
+                                    if (href && href !== '#') {
+                                        window.location.href = href;
+                                    }
+                                });
+                            });
+                        }
+                    });
+                    console.log('Bootstrap dropdowns initialized successfully');
+                    return;
+                } catch (error) {
+                    console.warn('Bootstrap dropdown initialization failed, using fallback:', error);
+                }
+            }
+            
+            // Fallback: ใช้ custom dropdown functionality
             dropdowns.forEach(dropdown => {
                 const toggle = dropdown.querySelector('.dropdown-toggle');
                 const menu = dropdown.querySelector('.dropdown-menu');
@@ -645,7 +686,7 @@ class App {
                 }
             });
             
-            console.log('Dropdowns initialized successfully');
+            console.log('Fallback dropdowns initialized successfully');
         }, 100);
     }
 
@@ -733,6 +774,18 @@ class App {
             
             .offcanvas-open {
                 overflow: hidden;
+            }
+            
+            /* Dropdown styles for better functionality */
+            .dropdown-menu.show {
+                display: block !important;
+                opacity: 1 !important;
+                visibility: visible !important;
+                transform: translateY(0) !important;
+            }
+            
+            .dropdown.show .dropdown-toggle svg {
+                transform: rotate(180deg);
             }
             
             .quick-enquiry-modal {
