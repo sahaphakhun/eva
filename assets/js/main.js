@@ -352,8 +352,11 @@ class App {
                 }
             });
 
+            // จัดการ dropdown ในมือถือ
+            this.initializeMobileDropdowns(mobileMenu);
+
             // ปิดเมนูเมื่อกดลิงก์/ปุ่มภายใน
-            const closeTargets = mobileMenu.querySelectorAll('[data-bs-dismiss="offcanvas"], .offcanvas-body .nav-link, .offcanvas .btn-reg');
+            const closeTargets = mobileMenu.querySelectorAll('[data-bs-dismiss="offcanvas"], .offcanvas-body .nav-link:not(.dropdown-toggle), .offcanvas .btn-reg');
             closeTargets.forEach((el) => {
                 el.addEventListener('click', () => {
                     if (this.isBootstrapAvailable()) {
@@ -407,6 +410,68 @@ class App {
             window.addEventListener('resize', cleanup);
             window.addEventListener('orientationchange', cleanup);
         }
+    }
+
+    /**
+     * เริ่มต้น dropdown ในมือถือ
+     */
+    initializeMobileDropdowns(mobileMenu) {
+        const dropdownToggles = mobileMenu.querySelectorAll('.dropdown-toggle');
+        
+        dropdownToggles.forEach(toggle => {
+            toggle.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                const dropdown = toggle.closest('.dropdown');
+                const dropdownMenu = dropdown.querySelector('.dropdown-menu');
+                
+                // ปิด dropdown อื่นๆ ก่อน
+                mobileMenu.querySelectorAll('.dropdown.show').forEach(otherDropdown => {
+                    if (otherDropdown !== dropdown) {
+                        otherDropdown.classList.remove('show');
+                        const otherMenu = otherDropdown.querySelector('.dropdown-menu');
+                        if (otherMenu) {
+                            otherMenu.style.display = 'none';
+                        }
+                    }
+                });
+                
+                // Toggle dropdown ปัจจุบัน
+                dropdown.classList.toggle('show');
+                if (dropdown.classList.contains('show')) {
+                    dropdownMenu.style.display = 'block';
+                } else {
+                    dropdownMenu.style.display = 'none';
+                }
+                
+                // หมุนลูกศร
+                const arrow = toggle.querySelector('svg');
+                if (arrow) {
+                    arrow.style.transform = dropdown.classList.contains('show') ? 'rotate(180deg)' : 'rotate(0deg)';
+                }
+            });
+        });
+        
+        // ปิด dropdown เมื่อคลิก item
+        const dropdownItems = mobileMenu.querySelectorAll('.dropdown-item');
+        dropdownItems.forEach(item => {
+            item.addEventListener('click', () => {
+                // ปิดเมนูมือถือทั้งหมด
+                if (this.isBootstrapAvailable()) {
+                    try {
+                        const bsOffcanvas = bootstrap.Offcanvas.getInstance(mobileMenu);
+                        if (bsOffcanvas) {
+                            bsOffcanvas.hide();
+                        }
+                    } catch (error) {
+                        this.hideMobileMenuFallback(mobileMenu);
+                    }
+                } else {
+                    this.hideMobileMenuFallback(mobileMenu);
+                }
+            });
+        });
     }
 
     /**
