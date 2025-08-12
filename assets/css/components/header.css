@@ -11,9 +11,6 @@
     left: 0;
     right: 0;
     z-index: 1000;
-    height: var(--header-height, 80px);
-    display: flex;
-    align-items: center;
 }
 
 .navbar-header-menu.scrolled {
@@ -192,8 +189,6 @@
     -webkit-backdrop-filter: blur(20px);
     border-right: none;
     box-shadow: 2px 0 20px rgba(0, 0, 0, 0.1);
-    top: var(--header-height, 80px);
-    height: calc(100vh - var(--header-height, 80px));
 }
 
 .offcanvas-header {
@@ -315,26 +310,16 @@
 
 /* Responsive adjustments */
 @media (max-width: 991.98px) {
-    :root {
-        --header-height: 70px;
-    }
-    
-    .navbar-header-menu {
-        height: var(--header-height);
-        padding: 0.75rem 0;
-    }
-    
-    .offcanvas {
-        top: var(--header-height);
-        height: calc(100vh - var(--header-height));
-    }
-    
     .navbar-header-menu .navbar-collapse {
         display: none !important;
     }
     
     .tab-view {
         display: block;
+    }
+    
+    .navbar-header-menu {
+        padding: 0.75rem 0;
     }
     
     .logo-text {
@@ -352,19 +337,23 @@
     }
 }
 
-@media (max-width: 767.98px) {
-    :root {
-        --header-height: 65px;
-    }
-    
-    .navbar-header-menu {
-        height: var(--header-height);
-        padding: 0.5rem 0;
+@media (min-width: 992px) {
+    .navbar-toggler {
+        display: none;
     }
     
     .offcanvas {
-        top: var(--header-height);
-        height: calc(100vh - var(--header-height));
+        display: none;
+    }
+    
+    .tab-view {
+        display: none;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .navbar-header-menu {
+        padding: 0.5rem 0;
     }
     
     .logo-text {
@@ -388,30 +377,5 @@
     .offcanvas-body .dropdown-item {
         padding: 0.4rem 1.5rem;
         font-size: 0.85rem;
-    }
-}
-
-@media (max-width: 575.98px) {
-    :root {
-        --header-height: 60px;
-    }
-    
-    .navbar-header-menu {
-        height: var(--header-height);
-        padding: 0.4rem 0;
-    }
-    
-    .offcanvas {
-        top: var(--header-height);
-        height: calc(100vh - var(--header-height));
-    }
-    
-    .logo-text {
-        font-size: 1rem;
-    }
-    
-    .logo-icon {
-        width: 20px;
-        height: 20px;
     }
 }

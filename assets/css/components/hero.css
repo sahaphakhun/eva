@@ -1,280 +1,461 @@
 /* Hero Section Styles */
 .section.landing {
-    min-height: 50vh; /* Reduced from 65vh */
-    background: url('/assets/images/bg-landing-img-1920.4e0dc254cdd765c6.webp') center/cover no-repeat;
-    position: relative;
+    min-height: 50vh; /* ลดจาก 65vh เป็น 50vh */
     display: flex;
     align-items: center;
-    justify-content: center;
-    overflow: hidden;
-}
-
-.section.landing .section-inner {
-    padding: 2rem 0; /* Reduced from 3rem 0 */
-    margin-top: var(--header-spacing); /* Use CSS variable for header spacing */
-    text-align: center;
-    color: var(--white);
-    position: relative;
-    z-index: 2;
-}
-
-.section.landing .slide {
-    min-height: 35vh; /* Reduced from 45vh */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 2rem 1rem;
-}
-
-.section.landing .heading-1 {
-    font-size: clamp(2.5rem, 6vw, 3.5rem);
-    font-weight: 700;
-    margin-bottom: 1.5rem;
-    line-height: 1.2;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-}
-
-.section.landing h6 {
-    font-size: clamp(1.1rem, 2.5vw, 1.3rem);
-    font-weight: 400;
-    margin-bottom: 2rem;
-    max-width: 600px;
-    line-height: 1.6;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-}
-
-.section.landing .cta-buttons {
-    display: flex;
-    gap: 1rem;
-    flex-wrap: wrap;
-    justify-content: center;
-    margin-bottom: 3rem;
-}
-
-.section.landing .btn-primary {
-    background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
-    color: #121f3e;
-    font-weight: 600;
-    padding: 1rem 2rem;
-    border-radius: 8px;
-    text-decoration: none;
-    transition: all 0.3s ease;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    box-shadow: 0 4px 15px rgba(251, 191, 36, 0.4);
-}
-
-.section.landing .btn-primary:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 25px rgba(251, 191, 36, 0.6);
-    color: #121f3e;
-}
-
-.section.landing .btn-secondary {
-    background: rgba(255, 255, 255, 0.15);
-    color: #ffffff;
-    font-weight: 600;
-    padding: 1rem 2rem;
-    border-radius: 8px;
-    text-decoration: none;
-    transition: all 0.3s ease;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.section.landing .btn-secondary:hover {
-    background: rgba(255, 255, 255, 0.25);
-    transform: translateY(-3px);
-    color: #ffffff;
-}
-
-.section.landing .device-mockups {
-    height: 400px; /* Reduced from 550px */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 2rem;
-    margin-top: 2rem;
-    position: relative;
-}
-
-.section.landing .desktop-monitor,
-.section.landing .tablet,
-.section.landing .smartphone,
-.section.landing .laptop {
-    width: 500px; /* Increased */
-    height: 350px; /* Increased */
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 12px;
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #ffffff;
-    font-weight: 600;
-    transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
 }
 
-.section.landing .desktop-monitor:hover,
-.section.landing .tablet:hover,
-.section.landing .smartphone:hover,
-.section.landing .laptop:hover {
-    transform: translateY(-5px);
-    background: rgba(255, 255, 255, 0.2);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
-}
-
-.section.landing .desktop-monitor::before,
-.section.landing .tablet::before,
-.section.landing .smartphone::before,
-.section.landing .laptop::before {
+.section.landing::before {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.1) 50%, transparent 70%);
-    animation: shimmer 2s infinite;
+    background: linear-gradient(135deg, rgba(18, 31, 62, 0.7) 0%, rgba(30, 58, 138, 0.5) 100%);
+    z-index: 1;
 }
 
-@keyframes shimmer {
-    0% { transform: translateX(-100%); }
-    100% { transform: translateX(100%); }
+.section.landing .section-inner {
+    position: relative;
+    z-index: 2;
+    padding: 2rem 0; /* ลดจาก 3rem 0 เป็น 2rem 0 */
+    margin-top: 80px; /* เพิ่มระยะห่างจากส่วนหัวที่ fixed */
 }
 
-.section.landing .indicators {
-    position: relative; /* Changed from absolute */
-    margin-top: 2rem;
-    padding: 1rem 0;
+.section.landing .slide {
+    display: flex;
+    align-items: center;
+    min-height: 35vh; /* ลดจาก 45vh เป็น 35vh */
+}
+
+.section.landing .left {
+    color: #ffffff;
+}
+
+.section.landing .heading-1 {
+    font-size: 3.5rem;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 1.5rem;
+    background: linear-gradient(135deg, #ffffff 0%, #fbbf24 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.section.landing h6 {
+    font-size: 1.25rem;
+    font-weight: 400;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+    color: #e5e7eb;
+}
+
+.section.landing .action-btns {
     display: flex;
     gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.section.landing .btn-reg {
+    padding: 0.75rem 2rem;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.section.landing .btn-secondary {
+    background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+    border: none;
+    color: #121f3e;
+}
+
+.section.landing .btn-secondary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(251, 191, 36, 0.4);
+    color: #121f3e;
+}
+
+.section.landing .btn-outline-secondary {
+    background: transparent;
+    border: 2px solid #fbbf24;
+    color: #fbbf24;
+}
+
+.section.landing .btn-outline-secondary:hover {
+    background: #fbbf24;
+    color: #121f3e;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(251, 191, 36, 0.3);
+}
+
+.section.landing .right {
+    display: flex;
     justify-content: center;
     align-items: center;
 }
 
+/* Device Mockups Container */
+.section.landing .device-mockups {
+    position: relative;
+    width: 100%;
+    height: 400px; /* ลดจาก 550px เป็น 400px */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Slide Styles */
+.section.landing .device-slide {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.5s ease-in-out;
+    transform: scale(0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.section.landing .device-slide.active {
+    opacity: 1;
+    visibility: visible;
+    transform: scale(1);
+    z-index: 5;
+}
+
+.section.landing .device {
+    position: relative;
+    border-radius: 10px;
+    box-shadow: none; /* ลบเงาออก */
+    transition: all 0.3s ease;
+    overflow: hidden;
+    margin: 0 auto;
+    background: transparent; /* ลบพื้นหลัง */
+}
+
+.section.landing .device:hover {
+    transform: scale(1.05);
+    z-index: 10;
+    box-shadow: none; /* ลบเงาออกเมื่อ hover */
+}
+
+.section.landing .device-screen {
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* เปลี่ยนจาก cover เป็น contain เพื่อให้รูปภาพแสดงเต็ม */
+    border-radius: inherit;
+    background: transparent; /* ลบพื้นหลังของรูปภาพ */
+}
+
+.section.landing .desktop-monitor {
+    width: 500px; /* ขยายให้ใหญ่ขึ้นมาก */
+    height: 350px; /* ขยายให้ใหญ่ขึ้นมาก */
+    background: transparent; /* ลบพื้นหลัง */
+    padding: 0; /* ลบ padding */
+}
+
+.section.landing .tablet {
+    width: 500px; /* ขยายให้ใหญ่ขึ้นมากและเท่ากับ desktop */
+    height: 350px; /* ขยายให้ใหญ่ขึ้นมากและเท่ากับ desktop */
+    background: transparent; /* ลบพื้นหลัง */
+    padding: 0; /* ลบ padding */
+}
+
+.section.landing .smartphone {
+    width: 500px; /* ขยายให้ใหญ่ขึ้นมากและเท่ากับ desktop */
+    height: 350px; /* ขยายให้ใหญ่ขึ้นมากและเท่ากับ desktop */
+    background: transparent; /* ลบพื้นหลัง */
+    padding: 0; /* ลบ padding */
+}
+
+.section.landing .laptop {
+    width: 500px; /* ขยายให้ใหญ่ขึ้นมากและเท่ากับ desktop */
+    height: 350px; /* ขยายให้ใหญ่ขึ้นมากและเท่ากับ desktop */
+    background: transparent; /* ลบพื้นหลัง */
+    padding: 0; /* ลบ padding */
+}
+
+/* Navigation Controls - Removed */
+
+/* Indicators */
+.section.landing .indicators {
+    position: relative; /* เปลี่ยนจาก absolute เป็น relative */
+    display: flex;
+    gap: 1rem;
+    z-index: 10;
+    justify-content: center; /* จัดกึ่งกลางแนวนอน */
+    align-items: center; /* จัดกึ่งกลางแนวตั้ง */
+    margin-top: 2rem; /* เพิ่มระยะห่างด้านบน */
+    padding: 1rem 0; /* เพิ่ม padding ด้านบนและล่าง */
+}
+
 .section.landing .indicator {
-    width: 12px;
-    height: 12px;
+    width: 16px;
+    height: 16px;
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.4);
     cursor: pointer;
     transition: all 0.3s ease;
-    border: 2px solid transparent;
+    border: 2px solid rgba(255, 255, 255, 0.6);
 }
 
 .section.landing .indicator.active {
     background: #fbbf24;
-    border-color: #ffffff;
-    transform: scale(1.2);
+    border-color: #fbbf24;
+    transform: scale(1.3);
+    box-shadow: 0 0 10px rgba(251, 191, 36, 0.5);
 }
 
 .section.landing .indicator:hover {
-    background: rgba(255, 255, 255, 0.5);
-    transform: scale(1.1);
+    background: #fbbf24;
+    border-color: #fbbf24;
+    transform: scale(1.2);
+    box-shadow: 0 0 8px rgba(251, 191, 36, 0.4);
 }
 
-/* Mobile Background Image */
-@media (max-width: 767.98px) {
-    .section.landing {
-        background: url('/assets/images/bg-landing-img-mob.155cf1e441fc212a.webp') center/cover no-repeat;
-    }
-}
-
-/* New responsive overrides for mobile */
-@media (max-width: 991.98px) {
-    .section.landing {
-        min-height: 40vh; /* Further reduced */
-    }
-    .section.landing .section-inner {
-        padding: 2rem 0; /* Adjusted */
-        margin-top: var(--header-spacing-mobile); /* Use mobile header spacing */
-    }
+/* Responsive Design */
+@media (max-width: 1199.98px) {
     .section.landing .heading-1 {
-        font-size: clamp(2rem, 5vw, 2.5rem); /* Dynamic font size */
+        font-size: 3rem;
     }
-    .section.landing h6 {
-        font-size: clamp(0.9rem, 2.5vw, 1.1rem); /* Dynamic font size */
-    }
+    
     .section.landing .device-mockups {
-        height: 350px; /* Further reduced */
+        height: 650px; /* เพิ่มขนาดให้ใหญ่ขึ้น */
     }
-    .section.landing .desktop-monitor,
-    .section.landing .tablet,
-    .section.landing .smartphone,
+    
+    .section.landing .desktop-monitor {
+        width: 450px;
+        height: 315px;
+    }
+    
+    .section.landing .tablet {
+        width: 450px;
+        height: 315px;
+    }
+    
+    .section.landing .smartphone {
+        width: 450px;
+        height: 315px;
+    }
+    
     .section.landing .laptop {
-        width: 300px; /* Reduced */
-        height: 210px; /* Reduced */
+        width: 450px;
+        height: 315px;
     }
+}
+
+@media (max-width: 991.98px) {
+    .section.landing .section-inner {
+        padding: 3rem 0; /* ลดจาก 4rem 0 เป็น 3rem 0 */
+        margin-top: 70px;
+    }
+    
+    .section.landing .slide {
+        min-height: auto;
+        text-align: center;
+    }
+    
+    .section.landing .heading-1 {
+        font-size: 2.5rem;
+    }
+    
+    .section.landing h6 {
+        font-size: 1.1rem;
+    }
+    
+    .section.landing .action-btns {
+        justify-content: center;
+    }
+    
+    .section.landing .right {
+        margin-top: 3rem;
+    }
+    
+    .section.landing .device-mockups {
+        height: 600px; /* เพิ่มขนาดให้ใหญ่ขึ้น */
+    }
+    
+    .section.landing .desktop-monitor {
+        width: 400px;
+        height: 280px;
+    }
+    
+    .section.landing .tablet {
+        width: 400px;
+        height: 280px;
+    }
+    
+    .section.landing .smartphone {
+        width: 400px;
+        height: 280px;
+    }
+    
+    .section.landing .laptop {
+        width: 400px;
+        height: 280px;
+    }
+    
+
+}
+
+@media (max-width: 767.98px) {
+    .section.landing .heading-1 {
+        font-size: 2rem;
+    }
+    
+    .section.landing h6 {
+        font-size: 1rem;
+    }
+    
+    .section.landing .btn-reg {
+        padding: 0.6rem 1.5rem;
+        font-size: 0.9rem;
+    }
+    
+    .section.landing .action-btns {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .section.landing .action-btns .btn-reg {
+        width: 100%;
+        max-width: 250px;
+        justify-content: center;
+    }
+    
+    .section.landing .device-mockups {
+        height: 550px; /* เพิ่มขนาดให้ใหญ่ขึ้น */
+    }
+    
+    .section.landing .desktop-monitor {
+        width: 350px;
+        height: 245px;
+    }
+    
+    .section.landing .tablet {
+        width: 350px;
+        height: 245px;
+    }
+    
+    .section.landing .smartphone {
+        width: 350px;
+        height: 245px;
+    }
+    
+    .section.landing .laptop {
+        width: 350px;
+        height: 245px;
+    }
+    
+
+    
     .section.landing .indicators {
-        margin-top: 1rem; /* Reduced margin */
-        gap: 0.75rem; /* Reduced gap */
+        bottom: 1rem;
+        justify-content: center; /* รักษาการจัดกึ่งกลาง */
+        align-items: center; /* รักษาการจัดกึ่งกลางแนวตั้ง */
     }
+    
     .section.landing .indicator {
         width: 12px;
         height: 12px;
     }
 }
 
-@media (max-width: 767.98px) {
-    .section.landing {
-        min-height: 35vh; /* Further reduced */
-    }
+@media (max-width: 575.98px) {
     .section.landing .section-inner {
-        margin-top: var(--header-spacing-mobile); /* Use mobile header spacing */
+        padding: 2rem 0; /* ลดจาก 3rem 0 เป็น 2rem 0 */
+        margin-top: 60px;
     }
+    
     .section.landing .heading-1 {
-        font-size: clamp(1.75rem, 6vw, 2rem); /* Dynamic font size */
+        font-size: 1.75rem;
     }
-    .section.landing h6 {
-        font-size: clamp(0.85rem, 2.8vw, 1rem); /* Dynamic font size */
-    }
+    
     .section.landing .device-mockups {
-        height: 300px; /* Further reduced */
+        height: 500px; /* เพิ่มขนาดให้ใหญ่ขึ้น */
     }
-    .section.landing .desktop-monitor,
-    .section.landing .tablet,
-    .section.landing .smartphone,
+    
+    .section.landing .desktop-monitor {
+        width: 300px;
+        height: 210px;
+    }
+    
+    .section.landing .tablet {
+        width: 300px;
+        height: 210px;
+    }
+    
+    .section.landing .smartphone {
+        width: 300px;
+        height: 210px;
+    }
+    
     .section.landing .laptop {
-        width: 250px; /* Reduced */
-        height: 175px; /* Reduced */
+        width: 300px;
+        height: 210px;
+    }
+    
+
+    
+    .section.landing .indicators {
+        bottom: 1rem;
+        justify-content: center; /* รักษาการจัดกึ่งกลาง */
+        align-items: center; /* รักษาการจัดกึ่งกลางแนวตั้ง */
+    }
+    
+    .section.landing .indicator {
+        width: 10px;
+        height: 10px;
     }
 }
 
+/* ===== Mobile-first optimizations without affecting desktop ===== */
+@media (max-width: 991.98px) {
+  .section.landing { min-height: 40vh; }
+  .section.landing .section-inner { padding: 1.25rem 0; margin-top: 64px; }
+  .section.landing .slide { min-height: auto; }
+  .section.landing .heading-1 { font-size: 2rem; margin-bottom: 0.75rem; }
+  .section.landing h6 { font-size: 1rem; margin-bottom: 1rem; }
+  .section.landing .btn-reg { padding: 0.55rem 1.25rem; }
+  .section.landing .right { margin-top: 1.25rem; }
+  .section.landing .device-mockups { height: 320px; }
+  .section.landing .desktop-monitor { width: 340px; height: 220px; }
+  .section.landing .tablet { width: 300px; height: 200px; }
+  .section.landing .smartphone { width: 280px; height: 190px; }
+  .section.landing .laptop { width: 300px; height: 200px; }
+  .section.landing .indicators { margin-top: 0.75rem; padding: 0.5rem 0; }
+}
+
+@media (max-width: 767.98px) {
+  .section.landing { min-height: 36vh; }
+  .section.landing .section-inner { padding: 1rem 0; margin-top: 58px; }
+  .section.landing .heading-1 { font-size: 1.6rem; }
+  .section.landing h6 { font-size: 0.95rem; }
+  .section.landing .device-mockups { height: 280px; }
+  .section.landing .desktop-monitor { width: 280px; height: 185px; }
+  .section.landing .tablet { width: 260px; height: 172px; }
+  .section.landing .smartphone { width: 240px; height: 160px; }
+  .section.landing .laptop { width: 260px; height: 172px; }
+}
+
 @media (max-width: 575.98px) {
-    .section.landing {
-        min-height: 30vh; /* Further reduced */
-    }
-    .section.landing .section-inner {
-        padding: 1.5rem 0; /* Adjusted */
-        margin-top: var(--header-spacing-mobile); /* Use mobile header spacing */
-    }
-    .section.landing .heading-1 {
-        font-size: clamp(1.5rem, 7vw, 1.75rem); /* Dynamic font size */
-    }
-    .section.landing h6 {
-        font-size: clamp(0.8rem, 3vw, 0.9rem); /* Dynamic font size */
-    }
-    .section.landing .device-mockups {
-        height: 250px; /* Further reduced */
-    }
-    .section.landing .desktop-monitor,
-    .section.landing .tablet,
-    .section.landing .smartphone,
-    .section.landing .laptop {
-        width: 200px; /* Reduced */
-        height: 140px; /* Reduced */
-    }
-    .section.landing .indicator {
-        width: 8px;
-        height: 8px;
-    }
+  .section.landing { min-height: 34vh; }
+  .section.landing .section-inner { padding: 0.75rem 0; margin-top: 56px; }
+  .section.landing .heading-1 { font-size: 1.5rem; }
+  .section.landing .device-mockups { height: 240px; }
+  .section.landing .desktop-monitor { width: 230px; height: 150px; }
+  .section.landing .tablet { width: 220px; height: 145px; }
+  .section.landing .smartphone { width: 200px; height: 136px; }
+  .section.landing .laptop { width: 220px; height: 145px; }
 }
