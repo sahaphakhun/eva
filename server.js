@@ -8,6 +8,16 @@ const PORT = process.env.PORT || 3000;
 // Enable compression for better performance
 app.use(compression());
 
+// Health check endpoint
+app.get('/health', (req, res) => {
+  res.status(200).json({
+    status: 'OK',
+    timestamp: new Date().toISOString(),
+    uptime: process.uptime(),
+    environment: process.env.NODE_ENV || 'development'
+  });
+});
+
 // Serve static files
 app.use(express.static(__dirname));
 
