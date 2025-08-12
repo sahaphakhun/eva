@@ -602,9 +602,19 @@ class App {
                 // Close dropdown when clicking on menu items
                 const menuItems = menu.querySelectorAll('.dropdown-item');
                 menuItems.forEach(item => {
-                    item.addEventListener('click', () => {
+                    item.addEventListener('click', (e) => {
+                        // Allow the link to work normally
+                        e.stopPropagation();
+                        
+                        // Close the dropdown
                         dropdown.classList.remove('show');
                         menu.classList.remove('show');
+                        
+                        // Navigate to the href
+                        const href = item.getAttribute('href');
+                        if (href && href !== '#') {
+                            window.location.href = href;
+                        }
                     });
                 });
             });

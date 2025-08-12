@@ -8,7 +8,10 @@ const PORT = process.env.PORT || 3000;
 // Enable compression for better performance
 app.use(compression());
 
-// Health check endpoint
+// Serve static files
+app.use(express.static(__dirname));
+
+// Health check endpoint (must be before catch-all route)
 app.get('/health', (req, res) => {
   res.status(200).json({
     status: 'OK',
@@ -17,9 +20,6 @@ app.get('/health', (req, res) => {
     environment: process.env.NODE_ENV || 'development'
   });
 });
-
-// Serve static files
-app.use(express.static(__dirname));
 
 // Handle all routes by serving index.html (for SPA-like behavior)
 app.get('*', (req, res) => {
