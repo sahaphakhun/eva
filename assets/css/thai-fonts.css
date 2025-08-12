@@ -1,0 +1,165 @@
+/* Thai Fonts Optimization for EvA Cloud */
+
+/* Import Thai Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@100;200;300;400;500;600;700;800;900&family=Sarabun:wght@100;200;300;400;500;600;700;800&display=swap');
+
+/* Thai Font Variables */
+:root {
+    --thai-font-primary: 'Noto Sans Thai', sans-serif;
+    --thai-font-secondary: 'Sarabun', sans-serif;
+    --thai-font-fallback: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Base Thai Font Settings */
+body {
+    font-family: var(--thai-font-primary), var(--thai-font-secondary), var(--thai-font-fallback);
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-feature-settings: "liga" 1, "kern" 1;
+}
+
+/* Thai Typography Scale */
+.thai-text-xs { font-size: 0.75rem; line-height: 1.4; }
+.thai-text-sm { font-size: 0.875rem; line-height: 1.5; }
+.thai-text-base { font-size: 1rem; line-height: 1.7; }
+.thai-text-lg { font-size: 1.125rem; line-height: 1.6; }
+.thai-text-xl { font-size: 1.25rem; line-height: 1.5; }
+.thai-text-2xl { font-size: 1.5rem; line-height: 1.4; }
+.thai-text-3xl { font-size: 1.875rem; line-height: 1.3; }
+.thai-text-4xl { font-size: 2.25rem; line-height: 1.2; }
+.thai-text-5xl { font-size: 3rem; line-height: 1.1; }
+
+/* Thai Font Weights */
+.thai-light { font-weight: 300; }
+.thai-normal { font-weight: 400; }
+.thai-medium { font-weight: 500; }
+.thai-semibold { font-weight: 600; }
+.thai-bold { font-weight: 700; }
+.thai-extrabold { font-weight: 800; }
+
+/* Thai Headings */
+.thai-heading-1 {
+    font-family: var(--thai-font-primary);
+    font-size: 3rem;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+}
+
+.thai-heading-2 {
+    font-family: var(--thai-font-primary);
+    font-size: 2.25rem;
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+}
+
+.thai-heading-3 {
+    font-family: var(--thai-font-primary);
+    font-size: 1.875rem;
+    font-weight: 600;
+    line-height: 1.4;
+}
+
+.thai-heading-4 {
+    font-family: var(--thai-font-primary);
+    font-size: 1.5rem;
+    font-weight: 600;
+    line-height: 1.4;
+}
+
+.thai-heading-5 {
+    font-family: var(--thai-font-primary);
+    font-size: 1.25rem;
+    font-weight: 600;
+    line-height: 1.5;
+}
+
+.thai-heading-6 {
+    font-family: var(--thai-font-primary);
+    font-size: 1.125rem;
+    font-weight: 600;
+    line-height: 1.5;
+}
+
+/* Thai Body Text */
+.thai-body {
+    font-family: var(--thai-font-primary), var(--thai-font-secondary);
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.8;
+}
+
+.thai-body-large {
+    font-family: var(--thai-font-primary), var(--thai-font-secondary);
+    font-size: 1.125rem;
+    font-weight: 400;
+    line-height: 1.7;
+}
+
+.thai-body-small {
+    font-family: var(--thai-font-primary), var(--thai-font-secondary);
+    font-size: 0.875rem;
+    font-weight: 400;
+    line-height: 1.6;
+}
+
+/* Thai UI Elements */
+.thai-button {
+    font-family: var(--thai-font-primary);
+    font-weight: 500;
+    letter-spacing: 0.01em;
+}
+
+.thai-input {
+    font-family: var(--thai-font-primary), var(--thai-font-secondary);
+    font-size: 1rem;
+    font-weight: 400;
+}
+
+.thai-label {
+    font-family: var(--thai-font-primary);
+    font-weight: 500;
+    font-size: 0.875rem;
+}
+
+/* Thai Navigation */
+.thai-nav {
+    font-family: var(--thai-font-primary);
+    font-weight: 500;
+    letter-spacing: 0.01em;
+}
+
+/* Thai Footer */
+.thai-footer {
+    font-family: var(--thai-font-primary), var(--thai-font-secondary);
+    font-weight: 400;
+    line-height: 1.6;
+}
+
+/* Responsive Thai Typography */
+@media (max-width: 768px) {
+    .thai-heading-1 { font-size: 2.25rem; }
+    .thai-heading-2 { font-size: 1.875rem; }
+    .thai-heading-3 { font-size: 1.5rem; }
+    .thai-heading-4 { font-size: 1.25rem; }
+    .thai-heading-5 { font-size: 1.125rem; }
+    .thai-heading-6 { font-size: 1rem; }
+    
+    .thai-body { font-size: 0.875rem; }
+    .thai-body-large { font-size: 1rem; }
+    .thai-body-small { font-size: 0.75rem; }
+}
+
+/* Thai Font Loading Optimization */
+.thai-font-loading {
+    font-family: var(--thai-font-fallback);
+    opacity: 0.8;
+}
+
+.thai-font-loaded {
+    font-family: var(--thai-font-primary), var(--thai-font-secondary), var(--thai-font-fallback);
+    opacity: 1;
+    transition: opacity 0.3s ease;
+}
