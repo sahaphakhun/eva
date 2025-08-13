@@ -1,94 +1,112 @@
-/* We Serve these Industries Section Styles */
-.industries-served-section {
+/* Industries Section Styles */
+.industries-section {
     background: #ffffff;
-    padding: 1rem 0;
+    padding: var(--spacing-3xl) 0;
     position: relative;
-    z-index: 15;
-    border-bottom: 1px solid #e5e7eb;
 }
 
-.industries-served-section .section-title {
-    font-size: 2rem;
+.industries-section .section-title {
+    font-size: 2.5rem;
     font-weight: 700;
-    color: #121f3e;
-    margin: 0;
+    color: var(--secondary-color);
+    text-align: center;
+    margin-bottom: var(--spacing-2xl);
     position: relative;
 }
 
-.industries-served-section .section-title::after {
+.industries-section .section-title::after {
     content: '';
     position: absolute;
-    right: -2rem;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 1px;
-    height: 3rem;
-    background: #d1d5db;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 4px;
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%);
+    border-radius: 2px;
 }
 
-.industries-list {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 2rem;
+.industries-section .industries-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--spacing-lg);
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--spacing-md);
 }
 
-.industry-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.75rem;
+.industries-section .industry-item {
+    background: #ffffff;
+    border: 2px solid #f3f4f6;
+    border-radius: 12px;
+    padding: var(--spacing-lg);
     text-align: center;
-    flex: 1;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
 }
 
-.industry-icon {
+.industries-section .industry-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 1;
+}
+
+.industries-section .industry-item:hover {
+    transform: translateY(-5px);
+    border-color: var(--primary-color);
+    box-shadow: 0 10px 30px rgba(245, 158, 11, 0.2);
+}
+
+.industries-section .industry-item:hover::before {
+    opacity: 0.05;
+}
+
+.industries-section .industry-icon {
     width: 60px;
     height: 60px;
+    margin: 0 auto var(--spacing-md);
+    background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary-color) 100%);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.3s ease;
-    overflow: hidden;
-}
-
-.industry-icon svg {
-    width: 100%;
-    height: 100%;
+    position: relative;
+    z-index: 2;
     transition: all 0.3s ease;
 }
 
-.industry-icon.windows {
-    background: #ffe0e3;
-}
-
-.industry-icon.front-doors {
-    background: #deeefe;
-}
-
-.industry-icon.partitions {
-    background: #e2f6ee;
-}
-
-.industry-icon.facades {
-    background: #ededf9;
-}
-
-.industry-icon:hover {
+.industries-section .industry-item:hover .industry-icon {
     transform: scale(1.1);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 5px 15px rgba(245, 158, 11, 0.3);
 }
 
-.industry-icon:hover svg {
-    transform: scale(1.05);
+.industries-section .industry-icon svg {
+    width: 30px;
+    height: 30px;
+    fill: #ffffff;
 }
 
-.industry-name {
-    font-size: 0.9rem;
+.industries-section .industry-name {
+    font-size: 1.1rem;
     font-weight: 600;
-    color: #121f3e;
-    text-align: center;
+    color: var(--secondary-color);
+    margin: 0;
+    position: relative;
+    z-index: 2;
+    transition: color 0.3s ease;
+}
+
+.industries-section .industry-item:hover .industry-name {
+    color: var(--primary-dark);
 }
 
 /* Key Modules Section Styles */
@@ -238,27 +256,37 @@
 
 /* Responsive Design */
 @media (max-width: 991.98px) {
-    .industries-served-section {
-        padding: 1.5rem 0;
+    .industries-section {
+        padding: calc(var(--spacing-2xl) + var(--header-height-mobile)) 0 var(--spacing-2xl) 0;
     }
     
-    .industries-served-section .section-title {
-        font-size: 1.75rem;
+    .industries-section .section-title {
+        font-size: 2rem;
+        margin-bottom: var(--spacing-xl);
     }
     
-    .industries-served-section .section-title::after {
-        right: -1.5rem;
-        height: 2.5rem;
+    .industries-section .industries-grid {
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: var(--spacing-md);
+        padding: 0 var(--spacing-lg);
     }
     
-    .industries-list {
-        gap: 1.5rem;
+    .industries-section .industry-item {
+        padding: var(--spacing-md);
     }
     
-    .industry-icon {
+    .industries-section .industry-icon {
         width: 50px;
         height: 50px;
-        font-size: 1.25rem;
+    }
+    
+    .industries-section .industry-icon svg {
+        width: 25px;
+        height: 25px;
+    }
+    
+    .industries-section .industry-name {
+        font-size: 1rem;
     }
     
     .key-modules-section,
@@ -278,39 +306,38 @@
 }
 
 @media (max-width: 767.98px) {
-    .industries-served-section {
-        padding: 1.5rem 0;
+    .industries-section {
+        padding: calc(var(--spacing-xl) + var(--header-height-mobile-small)) 0 var(--spacing-xl) 0;
     }
     
-    .industries-served-section .section-title {
-        font-size: 1.5rem;
-        text-align: center;
-        margin-bottom: 2rem;
+    .industries-section .section-title {
+        font-size: 1.75rem;
+        margin-bottom: var(--spacing-lg);
     }
     
-    .industries-served-section .section-title::after {
-        display: none;
+    .industries-section .industries-grid {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: var(--spacing-sm);
+        padding: 0 var(--spacing-md);
     }
     
-    .industries-list {
-        flex-wrap: wrap;
-        gap: 1rem;
-        justify-content: center;
+    .industries-section .industry-item {
+        padding: var(--spacing-sm);
     }
     
-    .industry-item {
-        flex: 0 0 calc(50% - 1rem);
-        max-width: 120px;
-    }
-    
-    .industry-icon {
+    .industries-section .industry-icon {
         width: 45px;
         height: 45px;
-        font-size: 1.1rem;
+        margin-bottom: var(--spacing-sm);
     }
     
-    .industry-name {
-        font-size: 0.8rem;
+    .industries-section .industry-icon svg {
+        width: 22px;
+        height: 22px;
+    }
+    
+    .industries-section .industry-name {
+        font-size: 0.9rem;
     }
     
     .key-modules-section,
@@ -347,32 +374,38 @@
 }
 
 @media (max-width: 575.98px) {
-    .industries-served-section {
-        padding: 1rem 0;
+    .industries-section {
+        padding: calc(var(--spacing-lg) + var(--header-height-mobile-small)) 0 var(--spacing-lg) 0;
     }
     
-    .industries-served-section .section-title {
-        font-size: 1.25rem;
-        margin-bottom: 1.5rem;
+    .industries-section .section-title {
+        font-size: 1.5rem;
+        margin-bottom: var(--spacing-md);
     }
     
-    .industries-list {
-        gap: 0.75rem;
+    .industries-section .industries-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--spacing-sm);
+        padding: 0 var(--spacing-sm);
     }
     
-    .industry-item {
-        flex: 0 0 calc(50% - 0.75rem);
-        max-width: 100px;
+    .industries-section .industry-item {
+        padding: var(--spacing-sm);
     }
     
-    .industry-icon {
+    .industries-section .industry-icon {
         width: 40px;
         height: 40px;
-        font-size: 1rem;
+        margin-bottom: var(--spacing-sm);
     }
     
-    .industry-name {
-        font-size: 0.75rem;
+    .industries-section .industry-icon svg {
+        width: 20px;
+        height: 20px;
+    }
+    
+    .industries-section .industry-name {
+        font-size: 0.85rem;
     }
     
     .key-modules-section,
