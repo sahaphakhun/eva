@@ -80,6 +80,25 @@
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3);
         }
+        
+        /* Ensure tab content is visible */
+        .tab-pane.show.active {
+            display: block !important;
+        }
+        
+        .tab-pane.fade {
+            transition: opacity 0.15s linear;
+        }
+        
+        .tab-pane.fade.show {
+            opacity: 1;
+        }
+        
+        /* Debug styles */
+        .debug-tab {
+            border: 2px solid red !important;
+            background-color: yellow !important;
+        }
     </style>
 </head>
 <body>
@@ -285,6 +304,14 @@
                             <button class="btn btn-secondary btn-sm" onclick="testModal()">
                                 <i class="fas fa-bug me-1"></i>
                                 ทดสอบ Modal
+                            </button>
+                            <button class="btn btn-dark btn-sm" onclick="forceShowDemoDatesTab()">
+                                <i class="fas fa-eye me-1"></i>
+                                แสดงแท็บเดโม่
+                            </button>
+                            <button class="btn btn-warning btn-sm" onclick="debugTabVisibility()">
+                                <i class="fas fa-search me-1"></i>
+                                Debug แท็บ
                             </button>
                         </div>
                     </div>
@@ -984,7 +1011,29 @@ ID Line: ${registration.lineId}
         // Load demo dates when switching to demo dates tab
         document.getElementById('demo-dates-tab').addEventListener('click', function() {
             console.log('Demo dates tab clicked');
-            loadDemoDates();
+            setTimeout(() => {
+                loadDemoDates();
+            }, 100);
+        });
+
+        // Add event listener for tab switching using Bootstrap events
+        document.addEventListener('DOMContentLoaded', function() {
+            const demoDatesTab = document.getElementById('demo-dates-tab');
+            const registrationsTab = document.getElementById('registrations-tab');
+            
+            if (demoDatesTab) {
+                demoDatesTab.addEventListener('shown.bs.tab', function() {
+                    console.log('Demo dates tab shown');
+                    loadDemoDates();
+                });
+            }
+            
+            if (registrationsTab) {
+                registrationsTab.addEventListener('shown.bs.tab', function() {
+                    console.log('Registrations tab shown');
+                    loadRegistrations();
+                });
+            }
         });
 
         // Test API endpoint directly
@@ -1021,6 +1070,32 @@ ID Line: ${registration.lineId}
                 console.error('Bootstrap is not loaded!');
                 alert('เกิดข้อผิดพลาด: Bootstrap ไม่ได้ถูกโหลด กรุณารีเฟรชหน้าเว็บ');
             }
+
+            // ตรวจสอบ Tab elements
+            const registrationsTab = document.getElementById('registrations-tab');
+            const demoDatesTab = document.getElementById('demo-dates-tab');
+            const registrationsContent = document.getElementById('registrations');
+            const demoDatesContent = document.getElementById('demo-dates');
+            
+            console.log('Tab elements found:', {
+                registrationsTab: !!registrationsTab,
+                demoDatesTab: !!demoDatesTab,
+                registrationsContent: !!registrationsContent,
+                demoDatesContent: !!demoDatesContent
+            });
+
+            // ตรวจสอบ CSS classes
+            if (registrationsContent) {
+                console.log('Registrations content classes:', registrationsContent.className);
+            }
+            if (demoDatesContent) {
+                console.log('Demo dates content classes:', demoDatesContent.className);
+            }
+
+            // Debug tab visibility on load
+            setTimeout(() => {
+                debugTabVisibility();
+            }, 1000);
         });
 
         // Sync demo date counts
@@ -1086,6 +1161,84 @@ ID Line: ${registration.lineId}
                 openAddDemoDateModal();
             } else {
                 alert('ไม่พบ Modal elements');
+            }
+        }
+
+        // Force show demo dates tab
+        function forceShowDemoDatesTab() {
+            console.log('Forcing show demo dates tab...');
+            
+            // Remove active class from registrations tab
+            const registrationsTab = document.getElementById('registrations-tab');
+            const registrationsContent = document.getElementById('registrations');
+            
+            if (registrationsTab) {
+                registrationsTab.classList.remove('active');
+                registrationsTab.setAttribute('aria-selected', 'false');
+            }
+            
+            if (registrationsContent) {
+                registrationsContent.classList.remove('show', 'active');
+            }
+            
+            // Add active class to demo dates tab
+            const demoDatesTab = document.getElementById('demo-dates-tab');
+            const demoDatesContent = document.getElementById('demo-dates');
+            
+            if (demoDatesTab) {
+                demoDatesTab.classList.add('active');
+                demoDatesTab.setAttribute('aria-selected', 'true');
+            }
+            
+            if (demoDatesContent) {
+                demoDatesContent.classList.add('show', 'active');
+            }
+            
+            // Load demo dates data
+            loadDemoDates();
+            
+            console.log('Demo dates tab should be visible now');
+        }
+
+        // Debug tab visibility
+        function debugTabVisibility() {
+            console.log('=== DEBUG TAB VISIBILITY ===');
+            
+            const registrationsTab = document.getElementById('registrations-tab');
+            const demoDatesTab = document.getElementById('demo-dates-tab');
+            const registrationsContent = document.getElementById('registrations');
+            const demoDatesContent = document.getElementById('demo-dates');
+            
+            console.log('Registrations Tab:', {
+                element: registrationsTab,
+                classes: registrationsTab ? registrationsTab.className : 'N/A',
+                ariaSelected: registrationsTab ? registrationsTab.getAttribute('aria-selected') : 'N/A'
+            });
+            
+            console.log('Demo Dates Tab:', {
+                element: demoDatesTab,
+                classes: demoDatesTab ? demoDatesTab.className : 'N/A',
+                ariaSelected: demoDatesTab ? demoDatesTab.getAttribute('aria-selected') : 'N/A'
+            });
+            
+            console.log('Registrations Content:', {
+                element: registrationsContent,
+                classes: registrationsContent ? registrationsContent.className : 'N/A',
+                style: registrationsContent ? registrationsContent.style.display : 'N/A'
+            });
+            
+            console.log('Demo Dates Content:', {
+                element: demoDatesContent,
+                classes: demoDatesContent ? demoDatesContent.className : 'N/A',
+                style: demoDatesContent ? demoDatesContent.style.display : 'N/A'
+            });
+            
+            // Add debug styling
+            if (demoDatesContent) {
+                demoDatesContent.classList.add('debug-tab');
+                setTimeout(() => {
+                    demoDatesContent.classList.remove('debug-tab');
+                }, 3000);
             }
         }
     </script>
