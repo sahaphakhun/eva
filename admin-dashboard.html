@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - จัดการข้อมูลลงทะเบียน EVA Cloud</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="assets/css/thai-fonts.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', 'Sarabun', sans-serif;
+            background: #f8f9fa;
+        }
+        .navbar-brand {
+            font-weight: 700;
+            color: #667eea !important;
+        }
+        .card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        }
+        .card-header {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border-radius: 15px 15px 0 0 !important;
+            border: none;
+        }
+        .table {
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .table th {
+            background: #f8f9fa;
+            border: none;
+            font-weight: 600;
+            color: #495057;
+        }
+        .table td {
+            border: none;
+            border-bottom: 1px solid #e9ecef;
+            vertical-align: middle;
+        }
+        .btn-sm {
+            border-radius: 8px;
+            padding: 0.375rem 0.75rem;
+        }
+        .status-badge {
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 20px;
+        }
+        .search-box {
+            border-radius: 25px;
+            border: 2px solid #e9ecef;
+            padding: 0.5rem 1rem;
+        }
+        .search-box:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        }
+        .stats-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+        }
+        .stats-icon {
+            font-size: 2.5rem;
+            opacity: 0.8;
+        }
+        .export-btn {
+            background: linear-gradient(45deg, #28a745, #20c997);
+            border: none;
+            border-radius: 25px;
+            padding: 0.5rem 1.5rem;
+        }
+        .export-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-cloud me-2"></i>
+                EVA Cloud Admin
+            </a>
+            <div class="navbar-nav ms-auto">
+                <span class="navbar-text">
+                    <i class="fas fa-user-circle me-2"></i>
+                    ผู้ดูแลระบบ
+                </span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid py-4">
+        <!-- Statistics Cards -->
+        <div class="row mb-4">
+            <div class="col-md-3">
+                <div class="stats-card">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h3 class="mb-0" id="totalRegistrations">0</h3>
+                            <p class="mb-0 opacity-75">ลงทะเบียนทั้งหมด</p>
+                        </div>
+                        <div class="stats-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stats-card">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h3 class="mb-0" id="todayRegistrations">0</h3>
+                            <p class="mb-0 opacity-75">ลงทะเบียนวันนี้</p>
+                        </div>
+                        <div class="stats-icon">
+                            <i class="fas fa-calendar-day"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stats-card">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h3 class="mb-0" id="thisMonthRegistrations">0</h3>
+                            <p class="mb-0 opacity-75">ลงทะเบียนเดือนนี้</p>
+                        </div>
+                        <div class="stats-icon">
+                            <i class="fas fa-calendar-alt"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stats-card">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h3 class="mb-0" id="pendingRegistrations">0</h3>
+                            <p class="mb-0 opacity-75">รอติดต่อกลับ</p>
+                        </div>
+                        <div class="stats-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="card">
+            <div class="card-header">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">
+                        <i class="fas fa-list me-2"></i>
+                        ข้อมูลลงทะเบียนทั้งหมด
+                    </h5>
+                    <div class="d-flex gap-2">
+                        <button class="btn btn-light btn-sm" onclick="exportToCSV()">
+                            <i class="fas fa-download me-1"></i>
+                            Export CSV
+                        </button>
+                        <button class="btn btn-light btn-sm" onclick="refreshData()">
+                            <i class="fas fa-sync-alt me-1"></i>
+                            รีเฟรช
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <!-- Search and Filter -->
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <input type="text" class="form-control search-box" id="searchInput" placeholder="ค้นหาชื่อ, อีเมล, หรือบริษัท...">
+                    </div>
+                    <div class="col-md-3">
+                        <select class="form-select" id="statusFilter">
+                            <option value="">สถานะทั้งหมด</option>
+                            <option value="pending">รอติดต่อกลับ</option>
+                            <option value="contacted">ติดต่อแล้ว</option>
+                            <option value="demo_scheduled">นัดเดโมแล้ว</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <select class="form-select" id="positionFilter">
+                            <option value="">ตำแหน่งทั้งหมด</option>
+                            <option value="เจ้าของ">เจ้าของ</option>
+                            <option value="ช่างถอดแบบ">ช่างถอดแบบ</option>
+                            <option value="จัดซื้อ">จัดซื้อ</option>
+                            <option value="บัญชี">บัญชี</option>
+                            <option value="อื่นๆ">อื่นๆ</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Data Table -->
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>วันที่ลงทะเบียน</th>
+                                <th>ชื่อ-นามสกุล</th>
+                                <th>ตำแหน่ง</th>
+                                <th>บริษัท</th>
+                                <th>เบอร์โทร</th>
+                                <th>อีเมล</th>
+                                <th>สถานะ</th>
+                                <th>การดำเนินการ</th>
+                            </tr>
+                        </thead>
+                        <tbody id="registrationsTableBody">
+                            <!-- Data will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Pagination -->
+                <nav aria-label="Page navigation" class="mt-3">
+                    <ul class="pagination justify-content-center" id="pagination">
+                        <!-- Pagination will be generated here -->
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    <!-- Status Update Modal -->
+    <div class="modal fade" id="statusModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">อัปเดตสถานะ</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="statusUpdateForm">
+                        <input type="hidden" id="registrationId">
+                        <div class="mb-3">
+                            <label class="form-label">สถานะ</label>
+                            <select class="form-select" id="newStatus" required>
+                                <option value="pending">รอติดต่อกลับ</option>
+                                <option value="contacted">ติดต่อแล้ว</option>
+                                <option value="demo_scheduled">นัดเดโมแล้ว</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">หมายเหตุ</label>
+                            <textarea class="form-control" id="notes" rows="3" placeholder="เพิ่มหมายเหตุ (ไม่บังคับ)"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ยกเลิก</button>
+                    <button type="button" class="btn btn-primary" onclick="updateStatus()">อัปเดต</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let currentPage = 1;
+        let totalPages = 1;
+        let allRegistrations = [];
+
+        // Load data on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadRegistrations();
+            loadStatistics();
+        });
+
+        // Search and filter functionality
+        document.getElementById('searchInput').addEventListener('input', filterData);
+        document.getElementById('statusFilter').addEventListener('change', filterData);
+        document.getElementById('positionFilter').addEventListener('change', filterData);
+
+        async function loadRegistrations() {
+            try {
+                const response = await fetch('/api/registrations');
+                if (response.ok) {
+                    allRegistrations = await response.json();
+                    filterData();
+                    loadStatistics();
+                } else {
+                    console.error('Failed to load registrations');
+                }
+            } catch (error) {
+                console.error('Error loading registrations:', error);
+            }
+        }
+
+        function filterData() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const statusFilter = document.getElementById('statusFilter').value;
+            const positionFilter = document.getElementById('positionFilter').value;
+
+            let filteredData = allRegistrations.filter(reg => {
+                const matchesSearch = !searchTerm || 
+                    reg.fullName.toLowerCase().includes(searchTerm) ||
+                    reg.email.toLowerCase().includes(searchTerm) ||
+                    reg.companyName.toLowerCase().includes(searchTerm);
+                
+                const matchesStatus = !statusFilter || reg.status === statusFilter;
+                const matchesPosition = !positionFilter || reg.position === positionFilter;
+
+                return matchesSearch && matchesStatus && matchesPosition;
+            });
+
+            displayRegistrations(filteredData);
+        }
+
+        function displayRegistrations(data) {
+            const tbody = document.getElementById('registrationsTableBody');
+            const itemsPerPage = 10;
+            const startIndex = (currentPage - 1) * itemsPerPage;
+            const endIndex = startIndex + itemsPerPage;
+            const pageData = data.slice(startIndex, endIndex);
+
+            totalPages = Math.ceil(data.length / itemsPerPage);
+
+            tbody.innerHTML = pageData.map(reg => `
+                <tr>
+                    <td>${new Date(reg.createdAt).toLocaleDateString('th-TH')}</td>
+                    <td>${reg.title} ${reg.fullName}</td>
+                    <td>${reg.position}</td>
+                    <td>${reg.companyName}</td>
+                    <td>${reg.phone}</td>
+                    <td>${reg.email}</td>
+                    <td>
+                        <span class="badge status-badge bg-${getStatusColor(reg.status)}">
+                            ${getStatusText(reg.status)}
+                        </span>
+                    </td>
+                    <td>
+                        <button class="btn btn-sm btn-outline-primary" onclick="openStatusModal('${reg._id}', '${reg.status}')">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="btn btn-sm btn-outline-info" onclick="viewDetails('${reg._id}')">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+
+            generatePagination();
+        }
+
+        function getStatusColor(status) {
+            switch(status) {
+                case 'pending': return 'warning';
+                case 'contacted': return 'info';
+                case 'demo_scheduled': return 'success';
+                default: return 'secondary';
+            }
+        }
+
+        function getStatusText(status) {
+            switch(status) {
+                case 'pending': return 'รอติดต่อกลับ';
+                case 'contacted': return 'ติดต่อแล้ว';
+                case 'demo_scheduled': return 'นัดเดโมแล้ว';
+                default: return 'ไม่ทราบสถานะ';
+            }
+        }
+
+        function generatePagination() {
+            const pagination = document.getElementById('pagination');
+            let paginationHTML = '';
+
+            // Previous button
+            paginationHTML += `
+                <li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
+                    <a class="page-link" href="#" onclick="changePage(${currentPage - 1})">ก่อนหน้า</a>
+                </li>
+            `;
+
+            // Page numbers
+            for (let i = 1; i <= totalPages; i++) {
+                paginationHTML += `
+                    <li class="page-item ${i === currentPage ? 'active' : ''}">
+                        <a class="page-link" href="#" onclick="changePage(${i})">${i}</a>
+                    </li>
+                `;
+            }
+
+            // Next button
+            paginationHTML += `
+                <li class="page-item ${currentPage === totalPages ? 'disabled' : ''}">
+                    <a class="page-link" href="#" onclick="changePage(${currentPage + 1})">ถัดไป</a>
+                </li>
+            `;
+
+            pagination.innerHTML = paginationHTML;
+        }
+
+        function changePage(page) {
+            if (page >= 1 && page <= totalPages) {
+                currentPage = page;
+                filterData();
+            }
+        }
+
+        async function loadStatistics() {
+            try {
+                const response = await fetch('/api/statistics');
+                if (response.ok) {
+                    const stats = await response.json();
+                    document.getElementById('totalRegistrations').textContent = stats.total;
+                    document.getElementById('todayRegistrations').textContent = stats.today;
+                    document.getElementById('thisMonthRegistrations').textContent = stats.thisMonth;
+                    document.getElementById('pendingRegistrations').textContent = stats.pending;
+                }
+            } catch (error) {
+                console.error('Error loading statistics:', error);
+            }
+        }
+
+        function openStatusModal(id, currentStatus) {
+            document.getElementById('registrationId').value = id;
+            document.getElementById('newStatus').value = currentStatus;
+            new bootstrap.Modal(document.getElementById('statusModal')).show();
+        }
+
+        async function updateStatus() {
+            const id = document.getElementById('registrationId').value;
+            const status = document.getElementById('newStatus').value;
+            const notes = document.getElementById('notes').value;
+
+            try {
+                const response = await fetch(`/api/registrations/${id}/status`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ status, notes })
+                });
+
+                if (response.ok) {
+                    bootstrap.Modal.getInstance(document.getElementById('statusModal')).hide();
+                    loadRegistrations();
+                    loadStatistics();
+                } else {
+                    alert('เกิดข้อผิดพลาดในการอัปเดตสถานะ');
+                }
+            } catch (error) {
+                console.error('Error updating status:', error);
+                alert('เกิดข้อผิดพลาดในการเชื่อมต่อ');
+            }
+        }
+
+        function viewDetails(id) {
+            const registration = allRegistrations.find(reg => reg._id === id);
+            if (registration) {
+                alert(`
+ข้อมูลลงทะเบียน:
+ชื่อ: ${registration.title} ${registration.fullName}
+ตำแหน่ง: ${registration.position}
+เบอร์โทร: ${registration.phone}
+ID Line: ${registration.lineId}
+อีเมล: ${registration.email}
+บริษัท: ${registration.companyName}
+สถานที่ตั้ง: ${registration.companyLocation}
+แบรนด์อลูมิเนียม: ${registration.aluminumBrands || 'ไม่ระบุ'}
+วันที่ลงทะเบียน: ${new Date(registration.createdAt).toLocaleString('th-TH')}
+                `);
+            }
+        }
+
+        function exportToCSV() {
+            const headers = ['วันที่ลงทะเบียน', 'คำนำหน้า', 'ชื่อ-นามสกุล', 'ตำแหน่ง', 'เบอร์โทร', 'ID Line', 'อีเมล', 'บริษัท', 'สถานที่ตั้ง', 'แบรนด์อลูมิเนียม', 'สถานะ'];
+            const csvContent = [
+                headers.join(','),
+                ...allRegistrations.map(reg => [
+                    new Date(reg.createdAt).toLocaleDateString('th-TH'),
+                    reg.title,
+                    reg.fullName,
+                    reg.position,
+                    reg.phone,
+                    reg.lineId,
+                    reg.email,
+                    reg.companyName,
+                    reg.companyLocation,
+                    reg.aluminumBrands || '',
+                    getStatusText(reg.status)
+                ].join(','))
+            ].join('\n');
+
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `eva-registrations-${new Date().toISOString().split('T')[0]}.csv`;
+            link.click();
+        }
+
+        function refreshData() {
+            loadRegistrations();
+        }
+    </script>
+</body>
+</html>
