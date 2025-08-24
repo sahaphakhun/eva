@@ -393,6 +393,9 @@
             localStorage.removeItem('adminToken');
             if (window.location.pathname !== '/admin-login') {
                 window.location.href = '/admin-login';
+            } else {
+                // ถ้าอยู่ในหน้า login อยู่แล้ว ให้รีโหลดหน้า
+                window.location.reload();
             }
         }
 
@@ -697,6 +700,13 @@ ID Line: ${registration.lineId}
         async function loadDemoDates() {
             try {
                 const token = localStorage.getItem('adminToken');
+                if (!token) {
+                    if (window.location.pathname !== '/admin-login') {
+                        window.location.href = '/admin-login';
+                    }
+                    return;
+                }
+
                 const response = await fetch('/api/demo-dates', {
                     headers: {
                         'Authorization': `Bearer ${token}`
@@ -719,6 +729,7 @@ ID Line: ${registration.lineId}
                 }
             } catch (error) {
                 console.error('Error loading demo dates:', error);
+                // ไม่ต้อง redirect เมื่อเกิด network error
             }
         }
 
