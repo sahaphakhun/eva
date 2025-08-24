@@ -1,13 +1,15 @@
 # การแก้ไขปัญหาการรีโหลดซ้ำ ๆ ที่หน้า Admin Login
 
 ## ปัญหาที่พบ
-หน้า https://www.evacloudthai.com/admin-login มีการรีโหลดซ้ำ ๆ จนไม่สามารถล็อกอินได้
+1. หน้า https://www.evacloudthai.com/admin-login มีการรีโหลดซ้ำ ๆ จนไม่สามารถล็อกอินได้
+2. หลังจากแก้ไขแล้ว พบปัญหา "Access denied - Redirect loop detected" เมื่อเข้าหน้า admin-login
 
 ## สาเหตุของปัญหา
 1. **Redirect Loop**: การตรวจสอบ token ในหน้า admin-login.html ที่จะพยายาม redirect ไปหน้า `/admin` ถ้า token ยังใช้งานได้
 2. **Network Error Handling**: เมื่อเกิด network error ในการตรวจสอบ token ไม่มีการลบ token ออก ทำให้เกิดการตรวจสอบซ้ำ
 3. **ไม่มี Timeout**: การเรียก API ไม่มี timeout ทำให้เกิดการรอคอยนานเกินไป
 4. **ไม่มีการป้องกันการส่งฟอร์มซ้ำ**: ผู้ใช้สามารถกดปุ่มล็อกอินซ้ำได้
+5. **การตรวจสอบ Referer ที่ไม่เหมาะสม**: การตรวจสอบ referer header ใน middleware ทำให้เกิด false positive
 
 ## การแก้ไขที่ทำ
 
@@ -67,14 +69,26 @@ const timeoutId = setTimeout(() => controller.abort(), 10000); // timeout 10 ว
 
 ### 2. แก้ไขไฟล์ `middleware.js`
 
-#### เพิ่มการตรวจสอบ referer เพื่อป้องกัน redirect loop:
+#### ปรับปรุงการตรวจสอบ authentication:
 ```javascript
-// เพิ่มการตรวจสอบ referer เพื่อป้องกัน redirect loop
-const referer = req.get('Referer');
-if (referer && referer.includes('/admin-login')) {
-    return res.status(403).send('Access denied - Redirect loop detected');
+// Middleware สำหรับตรวจสอบการเข้าถึงแอดมินในหน้า HTML
+function requireAdminAuthHTML(req, res, next) {
+    const token = req.query.token || req.cookies?.adminToken;
+
+    if (!token || !verifyAdminToken(token)) {
+        // ป้องกัน redirect loop โดยตรวจสอบว่า request มาจากหน้าไหน
+        if (req.path === '/admin-login') {
+            return res.status(403).send('Access denied');
+        }
+        
+        return res.redirect('/admin-login');
+    }
+
+    next();
 }
 ```
+
+**หมายเหตุ**: ลบการตรวจสอบ referer ออกเพราะอาจทำให้เกิดปัญหา "Access denied - Redirect loop detected" โดยไม่จำเป็น
 
 ### 3. แก้ไขไฟล์ `server.js`
 
