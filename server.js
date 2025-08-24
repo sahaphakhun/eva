@@ -210,6 +210,10 @@ app.get('/admin', (req, res) => {
     res.sendFile(path.join(__dirname, 'admin-dashboard.html'));
 });
 
+app.get('/test', (req, res) => {
+    res.sendFile(path.join(__dirname, 'test-registration.html'));
+});
+
 // Handle all other routes by serving index.html (for SPA-like behavior)
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
@@ -224,6 +228,7 @@ async function startServer() {
         console.log(`Visit: http://localhost:${PORT}`);
         console.log(`Registration form: http://localhost:${PORT}/eva-registration`);
         console.log(`Admin dashboard: http://localhost:${PORT}/admin`);
+        console.log(`Test page: http://localhost:${PORT}/test`);
     });
 }
 

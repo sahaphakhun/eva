@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ทดสอบระบบฟอร์มลงทะเบียน EVA Cloud</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: #f8f9fa;
+            font-family: 'Sarabun', sans-serif;
+        }
+        .test-container {
+            max-width: 800px;
+            margin: 50px auto;
+        }
+        .test-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            margin-bottom: 20px;
+        }
+        .status-indicator {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 10px;
+        }
+        .status-success { background: #28a745; }
+        .status-error { background: #dc3545; }
+        .status-pending { background: #ffc107; }
+        .test-result {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 10px 0;
+            font-family: monospace;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container test-container">
+        <div class="text-center mb-4">
+            <h1>🧪 ทดสอบระบบฟอร์มลงทะเบียน EVA Cloud</h1>
+            <p class="text-muted">หน้าทดสอบการทำงานของระบบทั้งหมด</p>
+        </div>
+
+        <!-- Health Check Test -->
+        <div class="test-card">
+            <h4>🏥 Health Check</h4>
+            <p>ทดสอบการเชื่อมต่อเซิร์ฟเวอร์และฐานข้อมูล</p>
+            <button class="btn btn-primary" onclick="testHealthCheck()">ทดสอบ Health Check</button>
+            <div id="healthResult" class="test-result" style="display: none;"></div>
+        </div>
+
+        <!-- Registration Test -->
+        <div class="test-card">
+            <h4>📝 ทดสอบการลงทะเบียน</h4>
+            <p>ทดสอบการส่งข้อมูลลงทะเบียนไปยัง API</p>
+            <button class="btn btn-success" onclick="testRegistration()">ทดสอบการลงทะเบียน</button>
+            <div id="registrationResult" class="test-result" style="display: none;"></div>
+        </div>
+
+        <!-- Get Registrations Test -->
+        <div class="test-card">
+            <h4>📊 ทดสอบการดึงข้อมูลลงทะเบียน</h4>
+            <p>ทดสอบการดึงข้อมูลลงทะเบียนทั้งหมดจากฐานข้อมูล</p>
+            <button class="btn btn-info" onclick="testGetRegistrations()">ทดสอบการดึงข้อมูล</button>
+            <div id="getRegistrationsResult" class="test-result" style="display: none;"></div>
+        </div>
+
+        <!-- Statistics Test -->
+        <div class="test-card">
+            <h4>📈 ทดสอบสถิติ</h4>
+            <p>ทดสอบการดึงสถิติการลงทะเบียน</p>
+            <button class="btn btn-warning" onclick="testStatistics()">ทดสอบสถิติ</button>
+            <div id="statisticsResult" class="test-result" style="display: none;"></div>
+        </div>
+
+        <!-- System Status -->
+        <div class="test-card">
+            <h4>🔍 สถานะระบบ</h4>
+            <div id="systemStatus">
+                <p><span class="status-indicator status-pending"></span>กำลังตรวจสอบ...</p>
+            </div>
+        </div>
+
+        <!-- Test Results Summary -->
+        <div class="test-card">
+            <h4>📋 สรุปผลการทดสอบ</h4>
+            <div id="testSummary">
+                <p>ยังไม่มีการทดสอบ</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let testResults = {
+            health: null,
+            registration: null,
+            getRegistrations: null,
+            statistics: null
+        };
+
+        // Test Health Check
+        async function testHealthCheck() {
+            const resultDiv = document.getElementById('healthResult');
+            resultDiv.style.display = 'block';
+            resultDiv.innerHTML = 'กำลังทดสอบ...';
+
+            try {
+                const response = await fetch('/health');
+                const data = await response.json();
+                
+                if (response.ok) {
+                    testResults.health = 'success';
+                    resultDiv.innerHTML = `
+                        <div class="text-success">✅ Health Check สำเร็จ</div>
+                        <div>Status: ${data.status}</div>
+                        <div>MongoDB: ${data.mongodb}</div>
+                        <div>Uptime: ${Math.round(data.uptime)}s</div>
+                        <div>Timestamp: ${new Date(data.timestamp).toLocaleString('th-TH')}</div>
+                    `;
+                } else {
+                    testResults.health = 'error';
+                    resultDiv.innerHTML = `<div class="text-danger">❌ Health Check ล้มเหลว: ${response.status}</div>`;
+                }
+            } catch (error) {
+                testResults.health = 'error';
+                resultDiv.innerHTML = `<div class="text-danger">❌ Health Check ล้มเหลว: ${error.message}</div>`;
+            }
+            
+            updateSystemStatus();
+            updateTestSummary();
+        }
+
+        // Test Registration
+        async function testRegistration() {
+            const resultDiv = document.getElementById('registrationResult');
+            resultDiv.style.display = 'block';
+            resultDiv.innerHTML = 'กำลังทดสอบ...';
+
+            const testData = {
+                title: 'นาย',
+                fullName: 'ทดสอบ ระบบ',
+                position: 'เจ้าของ',
+                phone: '0812345678',
+                lineId: 'test123',
+                email: `test${Date.now()}@example.com`,
+                companyName: 'บริษัท ทดสอบ จำกัด',
+                companyLocation: 'กรุงเทพมหานคร',
+                aluminumBrands: 'AIS, Aluplast'
+            };
+
+            try {
+                const response = await fetch('/api/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(testData)
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    testResults.registration = 'success';
+                    resultDiv.innerHTML = `
+                        <div class="text-success">✅ การลงทะเบียนสำเร็จ</div>
+                        <div>ID: ${data.id}</div>
+                        <div>Message: ${data.message}</div>
+                        <div>ข้อมูลที่ส่ง:</div>
+                        <pre>${JSON.stringify(testData, null, 2)}</pre>
+                    `;
+                } else {
+                    testResults.registration = 'error';
+                    resultDiv.innerHTML = `
+                        <div class="text-danger">❌ การลงทะเบียนล้มเหลว: ${response.status}</div>
+                        <div>Error: ${data.message}</div>
+                    `;
+                }
+            } catch (error) {
+                testResults.registration = 'error';
+                resultDiv.innerHTML = `<div class="text-danger">❌ การลงทะเบียนล้มเหลว: ${error.message}</div>`;
+            }
+            
+            updateSystemStatus();
+            updateTestSummary();
+        }
+
+        // Test Get Registrations
+        async function testGetRegistrations() {
+            const resultDiv = document.getElementById('getRegistrationsResult');
+            resultDiv.style.display = 'block';
+            resultDiv.innerHTML = 'กำลังทดสอบ...';
+
+            try {
+                const response = await fetch('/api/registrations');
+                const data = await response.json();
+                
+                if (response.ok) {
+                    testResults.getRegistrations = 'success';
+                    resultDiv.innerHTML = `
+                        <div class="text-success">✅ การดึงข้อมูลสำเร็จ</div>
+                        <div>จำนวนรายการ: ${data.length}</div>
+                        <div>ข้อมูลล่าสุด:</div>
+                        <pre>${JSON.stringify(data.slice(0, 2), null, 2)}</pre>
+                    `;
+                } else {
+                    testResults.getRegistrations = 'error';
+                    resultDiv.innerHTML = `<div class="text-danger">❌ การดึงข้อมูลล้มเหลว: ${response.status}</div>`;
+                }
+            } catch (error) {
+                testResults.getRegistrations = 'error';
+                resultDiv.innerHTML = `<div class="text-danger">❌ การดึงข้อมูลล้มเหลว: ${error.message}</div>`;
+            }
+            
+            updateSystemStatus();
+            updateTestSummary();
+        }
+
+        // Test Statistics
+        async function testStatistics() {
+            const resultDiv = document.getElementById('statisticsResult');
+            resultDiv.style.display = 'block';
+            resultDiv.innerHTML = 'กำลังทดสอบ...';
+
+            try {
+                const response = await fetch('/api/statistics');
+                const data = await response.json();
+                
+                if (response.ok) {
+                    testResults.statistics = 'success';
+                    resultDiv.innerHTML = `
+                        <div class="text-success">✅ การดึงสถิติสำเร็จ</div>
+                        <div>ลงทะเบียนทั้งหมด: ${data.total}</div>
+                        <div>ลงทะเบียนวันนี้: ${data.today}</div>
+                        <div>ลงทะเบียนเดือนนี้: ${data.thisMonth}</div>
+                        <div>รอติดต่อกลับ: ${data.pending}</div>
+                    `;
+                } else {
+                    testResults.statistics = 'error';
+                    resultDiv.innerHTML = `<div class="text-danger">❌ การดึงสถิติล้มเหลว: ${response.status}</div>`;
+                }
+            } catch (error) {
+                testResults.statistics = 'error';
+                resultDiv.innerHTML = `<div class="text-danger">❌ การดึงสถิติล้มเหลว: ${error.message}</div>`;
+            }
+            
+            updateSystemStatus();
+            updateTestSummary();
+        }
+
+        // Update System Status
+        function updateSystemStatus() {
+            const statusDiv = document.getElementById('systemStatus');
+            const allTests = Object.values(testResults);
+            
+            if (allTests.every(result => result === 'success')) {
+                statusDiv.innerHTML = '<p><span class="status-indicator status-success"></span>ระบบทำงานปกติ ✅</p>';
+            } else if (allTests.some(result => result === 'error')) {
+                statusDiv.innerHTML = '<p><span class="status-indicator status-error"></span>ระบบมีปัญหา ❌</p>';
+            } else if (allTests.some(result => result === 'success')) {
+                statusDiv.innerHTML = '<p><span class="status-indicator status-pending"></span>ระบบทำงานบางส่วน ⚠️</p>';
+            }
+        }
+
+        // Update Test Summary
+        function updateTestSummary() {
+            const summaryDiv = document.getElementById('testSummary');
+            const successCount = Object.values(testResults).filter(result => result === 'success').length;
+            const errorCount = Object.values(testResults).filter(result => result === 'error').length;
+            const totalTests = Object.keys(testResults).length;
+            
+            summaryDiv.innerHTML = `
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="text-center">
+                            <h5 class="text-success">${successCount}</h5>
+                            <small>สำเร็จ</small>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="text-center">
+                            <h5 class="text-danger">${errorCount}</h5>
+                            <small>ล้มเหลว</small>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="text-center">
+                            <h5>${totalTests}</h5>
+                            <small>ทั้งหมด</small>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Auto-run health check on page load
+        window.addEventListener('load', () => {
+            setTimeout(testHealthCheck, 1000);
+        });
+    </script>
+</body>
+</html>
