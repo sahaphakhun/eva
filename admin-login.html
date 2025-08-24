@@ -171,11 +171,28 @@
         });
 
         // ตรวจสอบว่ามี token อยู่แล้วหรือไม่
-        window.addEventListener('load', function() {
+        window.addEventListener('load', async function() {
             const token = localStorage.getItem('adminToken');
             if (token) {
-                // ถ้ามี token อยู่แล้ว ให้ไปยังหน้าแอดมิน
-                window.location.href = '/admin';
+                try {
+                    // ตรวจสอบว่า token ยังใช้งานได้หรือไม่
+                    const response = await fetch('/api/statistics', {
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        }
+                    });
+                    
+                    if (response.ok) {
+                        // Token ยังใช้งานได้ ให้ไปยังหน้าแอดมิน
+                        window.location.href = '/admin';
+                    } else if (response.status === 401) {
+                        // Token ไม่ถูกต้องหรือหมดอายุ ให้ลบออก
+                        localStorage.removeItem('adminToken');
+                    }
+                } catch (error) {
+                    // เกิดข้อผิดพลาดในการเชื่อมต่อ ให้ลบ token
+                    localStorage.removeItem('adminToken');
+                }
             }
         });
     </script>
