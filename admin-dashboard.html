@@ -282,6 +282,10 @@
                                 <i class="fas fa-plus me-1"></i>
                                 เพิ่มวันที่เดโม่
                             </button>
+                            <button class="btn btn-secondary btn-sm" onclick="testModal()">
+                                <i class="fas fa-bug me-1"></i>
+                                ทดสอบ Modal
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -412,17 +416,35 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+        // ตรวจสอบ Bootstrap loading
+        window.addEventListener('load', function() {
+            if (typeof bootstrap !== 'undefined') {
+                console.log('Bootstrap loaded successfully');
+            } else {
+                console.error('Bootstrap failed to load');
+                alert('เกิดข้อผิดพลาด: Bootstrap ไม่ได้ถูกโหลด กรุณารีเฟรชหน้าเว็บ');
+            }
+        });
+    </script>
+    <script>
         let currentPage = 1;
         let totalPages = 1;
         let allRegistrations = [];
 
         // Load data on page load
         document.addEventListener('DOMContentLoaded', function() {
-                    // โหลดข้อมูลทั้งหมด
-        loadRegistrations();
-        loadStatistics();
-        // Load demo dates for reference
-        loadDemoDates();
+            console.log('DOM Content Loaded - Starting to load data...');
+            // โหลดข้อมูลทั้งหมด
+            loadRegistrations();
+            loadStatistics();
+            // Load demo dates for reference
+            loadDemoDates();
+            
+            // ตรวจสอบว่าปุ่มมีอยู่หรือไม่
+            const addButton = document.querySelector('button[onclick="openAddDemoDateModal()"]');
+            const sampleButton = document.querySelector('button[onclick="addSampleDemoDates()"]');
+            console.log('Add button found:', addButton);
+            console.log('Sample button found:', sampleButton);
         });
 
         // ฟังก์ชันสำหรับการจัดการข้อมูล (ไม่ต้องตรวจสอบ authentication)
@@ -793,19 +815,47 @@ ID Line: ${registration.lineId}
         }
 
         function openAddDemoDateModal() {
-            document.getElementById('demoDateModalTitle').textContent = 'เพิ่มวันที่เดโม่';
-            document.getElementById('demoDateId').value = '';
-            document.getElementById('demoDateText').value = '';
-            document.getElementById('demoDateMaxCount').value = '';
+            console.log('Opening add demo date modal...');
             
-            // ลบข้อมูลปัจจุบันออก
-            const modalBody = document.querySelector('#demoDateModal .modal-body');
-            const existingInfo = modalBody.querySelector('.alert-info');
-            if (existingInfo) {
-                existingInfo.remove();
+            try {
+                const modalTitle = document.getElementById('demoDateModalTitle');
+                const demoDateId = document.getElementById('demoDateId');
+                const demoDateText = document.getElementById('demoDateText');
+                const demoDateMaxCount = document.getElementById('demoDateMaxCount');
+                const modal = document.getElementById('demoDateModal');
+                
+                if (!modalTitle || !demoDateId || !demoDateText || !demoDateMaxCount || !modal) {
+                    console.error('Modal elements not found:', {
+                        modalTitle: !!modalTitle,
+                        demoDateId: !!demoDateId,
+                        demoDateText: !!demoDateText,
+                        demoDateMaxCount: !!demoDateMaxCount,
+                        modal: !!modal
+                    });
+                    alert('เกิดข้อผิดพลาดในการเปิด Modal กรุณารีเฟรชหน้าเว็บ');
+                    return;
+                }
+                
+                modalTitle.textContent = 'เพิ่มวันที่เดโม่';
+                demoDateId.value = '';
+                demoDateText.value = '';
+                demoDateMaxCount.value = '';
+                
+                // ลบข้อมูลปัจจุบันออก
+                const modalBody = modal.querySelector('.modal-body');
+                const existingInfo = modalBody.querySelector('.alert-info');
+                if (existingInfo) {
+                    existingInfo.remove();
+                }
+                
+                const bootstrapModal = new bootstrap.Modal(modal);
+                bootstrapModal.show();
+                console.log('Modal opened successfully');
+                
+            } catch (error) {
+                console.error('Error opening modal:', error);
+                alert('เกิดข้อผิดพลาดในการเปิด Modal: ' + error.message);
             }
-            
-            new bootstrap.Modal(document.getElementById('demoDateModal')).show();
         }
 
         function openEditDemoDateModal(id) {
@@ -963,6 +1013,14 @@ ID Line: ${registration.lineId}
         document.addEventListener('DOMContentLoaded', function() {
             console.log('Page loaded, testing API...');
             testDemoDatesAPI();
+            
+            // ตรวจสอบ Bootstrap
+            if (typeof bootstrap !== 'undefined') {
+                console.log('Bootstrap is loaded');
+            } else {
+                console.error('Bootstrap is not loaded!');
+                alert('เกิดข้อผิดพลาด: Bootstrap ไม่ได้ถูกโหลด กรุณารีเฟรชหน้าเว็บ');
+            }
         });
 
         // Sync demo date counts
@@ -1008,6 +1066,26 @@ ID Line: ${registration.lineId}
             } catch (error) {
                 console.error('Error adding sample demo dates:', error);
                 alert('เกิดข้อผิดพลาดในการเชื่อมต่อ');
+            }
+        }
+
+        // Test modal function
+        function testModal() {
+            console.log('Testing modal...');
+            alert('ฟังก์ชัน JavaScript ทำงานปกติ');
+            
+            // ตรวจสอบ Modal elements
+            const modal = document.getElementById('demoDateModal');
+            const modalTitle = document.getElementById('demoDateModalTitle');
+            
+            console.log('Modal element:', modal);
+            console.log('Modal title element:', modalTitle);
+            
+            if (modal && modalTitle) {
+                alert('Modal elements พบแล้ว - ลองเปิด Modal');
+                openAddDemoDateModal();
+            } else {
+                alert('ไม่พบ Modal elements');
             }
         }
     </script>
