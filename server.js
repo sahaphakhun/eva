@@ -247,7 +247,19 @@ app.get('/api/demo-dates', async (req, res) => {
         }
 
         const demoDates = await db.collection('demoDates').find({}).sort({ createdAt: -1 }).toArray();
-        res.json(demoDates);
+        
+        // Calculate current count for each demo date
+        const demoDatesWithCount = await Promise.all(demoDates.map(async (date) => {
+            const currentCount = await db.collection('registrations').countDocuments({
+                demoDateId: date._id.toString()
+            });
+            return {
+                ...date,
+                currentCount: currentCount
+            };
+        }));
+        
+        res.json(demoDatesWithCount);
     } catch (error) {
         console.error('Error fetching demo dates:', error);
         res.status(500).json({ message: 'เกิดข้อผิดพลาดในการดึงข้อมูลวันที่เดโม่' });

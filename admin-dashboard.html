@@ -265,21 +265,64 @@
                             <i class="fas fa-calendar-alt me-2"></i>
                             จัดการวันที่เดโม่
                         </h5>
-                        <button class="btn btn-success btn-sm" onclick="openAddDemoDateModal()">
-                            <i class="fas fa-plus me-1"></i>
-                            เพิ่มวันที่เดโม่
-                        </button>
+                        <div class="d-flex gap-2">
+                            <button class="btn btn-light btn-sm" onclick="loadDemoDates()">
+                                <i class="fas fa-sync-alt me-1"></i>
+                                รีเฟรช
+                            </button>
+                            <button class="btn btn-success btn-sm" onclick="openAddDemoDateModal()">
+                                <i class="fas fa-plus me-1"></i>
+                                เพิ่มวันที่เดโม่
+                            </button>
+                        </div>
                     </div>
                 </div>
                 <div class="card-body">
+                    <!-- Summary Cards -->
+                    <div class="row mb-3" id="demoDateSummary">
+                        <div class="col-md-3">
+                            <div class="card bg-primary text-white">
+                                <div class="card-body text-center">
+                                    <h5 class="card-title">วันที่เดโม่ทั้งหมด</h5>
+                                    <h3 id="totalDemoDates">0</h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card bg-success text-white">
+                                <div class="card-body text-center">
+                                    <h5 class="card-title">วันที่ว่าง</h5>
+                                    <h3 id="availableDemoDates">0</h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card bg-danger text-white">
+                                <div class="card-body text-center">
+                                    <h5 class="card-title">วันที่เต็ม</h5>
+                                    <h3 id="fullDemoDates">0</h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card bg-info text-white">
+                                <div class="card-body text-center">
+                                    <h5 class="card-title">ผู้ลงทะเบียนทั้งหมด</h5>
+                                    <h3 id="totalRegistrations">0</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
                     <div class="table-responsive">
                         <table class="table table-hover">
                             <thead>
                                 <tr>
                                     <th>วันที่เดโม่</th>
                                     <th>จำนวนคนสูงสุด</th>
-                                    <th>จำนวนคนที่ลงทะเบียน</th>
+                                    <th>จำนวนคนที่ลงทะเบียน/สูงสุด</th>
                                     <th>สถานะ</th>
+                                    <th>วันที่สร้าง</th>
                                     <th>การดำเนินการ</th>
                                 </tr>
                             </thead>
@@ -338,16 +381,16 @@
                     <form id="demoDateForm">
                         <input type="hidden" id="demoDateId">
                         <div class="mb-3">
-                            <label class="form-label">วันที่เดโม่</label>
+                            <label class="form-label">วันที่เดโม่ <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="demoDateText" required 
-                                   placeholder="เช่น วันที่ 20/08/2568 เวลา 12.00">
-                            <div class="form-text">ระบุวันที่และเวลาที่สะดวกสำหรับเดโม่</div>
+                                   placeholder="เช่น วันที่ 10 เวลา 11โมง, วันที่ 15 เวลา 14.00 น.">
+                            <div class="form-text">ระบุวันที่และเวลาที่สะดวกสำหรับเดโม่ (เป็นสตริงข้อความ)</div>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">จำนวนคนสูงสุด</label>
+                            <label class="form-label">จำนวนคนสูงสุด <span class="text-danger">*</span></label>
                             <input type="number" class="form-control" id="demoDateMaxCount" required 
-                                   min="1" placeholder="เช่น 10">
-                            <div class="form-text">จำนวนคนสูงสุดที่สามารถลงทะเบียนได้</div>
+                                   min="1" max="100" placeholder="เช่น 10">
+                            <div class="form-text">จำนวนคนสูงสุดที่สามารถลงทะเบียนได้ (จำนวนเต็ม)</div>
                         </div>
                     </form>
                 </div>
@@ -620,35 +663,99 @@ ID Line: ${registration.lineId}
                     displayDemoDates();
                 } else {
                     console.error('Failed to load demo dates');
+                    const tbody = document.getElementById('demoDatesTableBody');
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="6" class="text-center text-danger py-4">
+                                <i class="fas fa-exclamation-triangle fa-2x mb-2"></i>
+                                <br>
+                                เกิดข้อผิดพลาดในการโหลดข้อมูล
+                                <br>
+                                <button class="btn btn-sm btn-outline-primary mt-2" onclick="loadDemoDates()">
+                                    <i class="fas fa-sync-alt me-1"></i>
+                                    ลองใหม่
+                                </button>
+                            </td>
+                        </tr>
+                    `;
                 }
             } catch (error) {
                 console.error('Error loading demo dates:', error);
+                const tbody = document.getElementById('demoDatesTableBody');
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6" class="text-center text-danger py-4">
+                            <i class="fas fa-exclamation-triangle fa-2x mb-2"></i>
+                            <br>
+                            เกิดข้อผิดพลาดในการเชื่อมต่อ
+                            <br>
+                            <button class="btn btn-sm btn-outline-primary mt-2" onclick="loadDemoDates()">
+                                <i class="fas fa-sync-alt me-1"></i>
+                                ลองใหม่
+                            </button>
+                        </td>
+                    </tr>
+                `;
             }
         }
 
         function displayDemoDates() {
             const tbody = document.getElementById('demoDatesTableBody');
-            tbody.innerHTML = allDemoDates.map(date => `
-                <tr>
-                    <td>${date.dateText}</td>
-                    <td>${date.maxCount}</td>
-                    <td>${date.currentCount}</td>
-                    <td>
-                        <span class="badge status-badge ${date.currentCount >= date.maxCount ? 'bg-danger' : 'bg-success'}">
-                            ${date.currentCount >= date.maxCount ? 'เต็ม' : 'ว่าง'}
-                        </span>
-                    </td>
-                    <td>
-                        <button class="btn btn-sm btn-outline-primary" onclick="openEditDemoDateModal('${date._id}')">
-                            <i class="fas fa-edit"></i>
-                        </button>
-                        <button class="btn btn-sm btn-outline-danger" onclick="deleteDemoDate('${date._id}')" 
-                                ${date.currentCount > 0 ? 'disabled' : ''}>
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </td>
-                </tr>
-            `).join('');
+            
+            // อัปเดตข้อมูลสรุป
+            updateDemoDateSummary();
+            
+            if (allDemoDates.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6" class="text-center text-muted py-4">
+                            <i class="fas fa-calendar-times fa-2x mb-2"></i>
+                            <br>
+                            ยังไม่มีวันที่เดโม่ที่กำหนดไว้
+                            <br>
+                            <small>คลิกปุ่ม "เพิ่มวันที่เดโม่" เพื่อเริ่มต้น</small>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            tbody.innerHTML = allDemoDates.map(date => {
+                const createdAt = date.createdAt ? new Date(date.createdAt).toLocaleDateString('th-TH', {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                }) : 'ไม่ระบุ';
+                
+                return `
+                    <tr>
+                        <td>${date.dateText}</td>
+                        <td>${date.maxCount}</td>
+                        <td>
+                            ${date.currentCount || 0} / ${date.maxCount}
+                            <br>
+                            <small class="text-muted">เหลือ ${date.maxCount - (date.currentCount || 0)} คน</small>
+                        </td>
+                        <td>
+                            <span class="badge status-badge ${(date.currentCount || 0) >= date.maxCount ? 'bg-danger' : 'bg-success'}">
+                                ${(date.currentCount || 0) >= date.maxCount ? 'เต็ม' : 'ว่าง'}
+                            </span>
+                        </td>
+                        <td>${createdAt}</td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-primary" onclick="openEditDemoDateModal('${date._id}')">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-danger" onclick="deleteDemoDate('${date._id}')" 
+                                    ${(date.currentCount || 0) > 0 ? 'disabled' : ''}>
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
         }
 
         function openAddDemoDateModal() {
@@ -656,6 +763,14 @@ ID Line: ${registration.lineId}
             document.getElementById('demoDateId').value = '';
             document.getElementById('demoDateText').value = '';
             document.getElementById('demoDateMaxCount').value = '';
+            
+            // ลบข้อมูลปัจจุบันออก
+            const modalBody = document.querySelector('#demoDateModal .modal-body');
+            const existingInfo = modalBody.querySelector('.alert-info');
+            if (existingInfo) {
+                existingInfo.remove();
+            }
+            
             new bootstrap.Modal(document.getElementById('demoDateModal')).show();
         }
 
@@ -666,6 +781,24 @@ ID Line: ${registration.lineId}
                 document.getElementById('demoDateId').value = demoDate._id;
                 document.getElementById('demoDateText').value = demoDate.dateText;
                 document.getElementById('demoDateMaxCount').value = demoDate.maxCount;
+                
+                // แสดงข้อมูลปัจจุบัน
+                const currentInfo = document.createElement('div');
+                currentInfo.className = 'alert alert-info mb-3';
+                currentInfo.innerHTML = `
+                    <strong>ข้อมูลปัจจุบัน:</strong><br>
+                    จำนวนคนที่ลงทะเบียนแล้ว: ${demoDate.currentCount || 0} คน<br>
+                    จำนวนคนสูงสุด: ${demoDate.maxCount} คน<br>
+                    จำนวนคนที่เหลือ: ${demoDate.maxCount - (demoDate.currentCount || 0)} คน
+                `;
+                
+                const modalBody = document.querySelector('#demoDateModal .modal-body');
+                const existingInfo = modalBody.querySelector('.alert-info');
+                if (existingInfo) {
+                    existingInfo.remove();
+                }
+                modalBody.insertBefore(currentInfo, modalBody.firstChild);
+                
                 new bootstrap.Modal(document.getElementById('demoDateModal')).show();
             }
         }
@@ -675,9 +808,26 @@ ID Line: ${registration.lineId}
             const dateText = document.getElementById('demoDateText').value.trim();
             const maxCount = parseInt(document.getElementById('demoDateMaxCount').value);
 
-            if (!dateText || !maxCount || maxCount < 1) {
-                alert('กรุณากรอกข้อมูลให้ครบถ้วนและถูกต้อง');
+            if (!dateText) {
+                alert('กรุณากรอกวันที่เดโม่');
+                document.getElementById('demoDateText').focus();
                 return;
+            }
+
+            if (!maxCount || maxCount < 1 || maxCount > 100) {
+                alert('กรุณากรอกจำนวนคนสูงสุดที่ถูกต้อง (1-100 คน)');
+                document.getElementById('demoDateMaxCount').focus();
+                return;
+            }
+
+            // ตรวจสอบว่าถ้าเป็นการแก้ไข ไม่ให้ลดจำนวนคนสูงสุดให้น้อยกว่าจำนวนคนที่ลงทะเบียนแล้ว
+            if (id) {
+                const currentDemoDate = allDemoDates.find(date => date._id === id);
+                if (currentDemoDate && maxCount < (currentDemoDate.currentCount || 0)) {
+                    alert(`ไม่สามารถลดจำนวนคนสูงสุดได้ เนื่องจากมีผู้ลงทะเบียนแล้ว ${currentDemoDate.currentCount || 0} คน`);
+                    document.getElementById('demoDateMaxCount').focus();
+                    return;
+                }
             }
 
             try {
@@ -727,6 +877,18 @@ ID Line: ${registration.lineId}
                 console.error('Error deleting demo date:', error);
                 alert('เกิดข้อผิดพลาดในการเชื่อมต่อ');
             }
+        }
+
+        function updateDemoDateSummary() {
+            const totalDemoDates = allDemoDates.length;
+            const availableDemoDates = allDemoDates.filter(date => (date.currentCount || 0) < date.maxCount).length;
+            const fullDemoDates = allDemoDates.filter(date => (date.currentCount || 0) >= date.maxCount).length;
+            const totalRegistrations = allDemoDates.reduce((sum, date) => sum + (date.currentCount || 0), 0);
+
+            document.getElementById('totalDemoDates').textContent = totalDemoDates;
+            document.getElementById('availableDemoDates').textContent = availableDemoDates;
+            document.getElementById('fullDemoDates').textContent = fullDemoDates;
+            document.getElementById('totalRegistrations').textContent = totalRegistrations;
         }
 
         // Load demo dates when switching to demo dates tab
