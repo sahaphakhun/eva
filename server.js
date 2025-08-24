@@ -519,6 +519,10 @@ app.get('/admin', (req, res) => {
     res.sendFile(path.join(__dirname, 'admin-dashboard.html'));
 });
 
+app.get('/admin-demo-dates', (req, res) => {
+    res.sendFile(path.join(__dirname, 'admin-demo-dates.html'));
+});
+
 app.get('/test', (req, res) => {
     res.sendFile(path.join(__dirname, 'test-registration.html'));
 });
