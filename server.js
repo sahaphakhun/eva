@@ -434,6 +434,52 @@ app.post('/api/demo-dates/sync-counts', async (req, res) => {
     }
 });
 
+// Add sample demo dates (utility endpoint)
+app.post('/api/demo-dates/add-samples', async (req, res) => {
+    try {
+        if (!db) {
+            return res.status(500).json({ message: 'Database not connected' });
+        }
+
+        // ข้อมูลวันที่เดโม่ตัวอย่าง
+        const sampleDemoDates = [
+            {
+                dateText: 'วันที่ 15 ธันวาคม 2567 เวลา 10:00 น.',
+                maxCount: 10,
+                currentCount: 0,
+                createdAt: new Date(),
+                updatedAt: new Date()
+            },
+            {
+                dateText: 'วันที่ 16 ธันวาคม 2567 เวลา 14:00 น.',
+                maxCount: 15,
+                currentCount: 0,
+                createdAt: new Date(),
+                updatedAt: new Date()
+            },
+            {
+                dateText: 'วันที่ 17 ธันวาคม 2567 เวลา 11:00 น.',
+                maxCount: 8,
+                currentCount: 0,
+                createdAt: new Date(),
+                updatedAt: new Date()
+            }
+        ];
+
+        const result = await db.collection('demoDates').insertMany(sampleDemoDates);
+
+        res.json({
+            message: `เพิ่มข้อมูลวันที่เดโม่ตัวอย่าง ${result.insertedCount} รายการสำเร็จ`,
+            insertedCount: result.insertedCount,
+            insertedIds: result.insertedIds
+        });
+
+    } catch (error) {
+        console.error('Error adding sample demo dates:', error);
+        res.status(500).json({ message: 'เกิดข้อผิดพลาดในการเพิ่มข้อมูลตัวอย่าง' });
+    }
+});
+
 // Get demo dates for public form (no auth required)
 app.get('/api/public/demo-dates', async (req, res) => {
     try {
