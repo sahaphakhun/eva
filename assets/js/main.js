@@ -155,8 +155,7 @@ class App {
             { name: 'header', container: 'header-container' },
             { name: 'sections/hero', container: 'hero-container' },
             { name: 'sections/industries', container: 'industries-container' },
-            { name: 'footer', container: 'footer-container' },
-            { name: 'ui/quick-enquiry', container: 'quick-enquiry-container' }
+            { name: 'footer', container: 'footer-container' }
         ];
 
         // โหลดเฉพาะ component ที่มี container อยู่ในหน้านั้น ๆ เพื่อให้รองรับหลายหน้า
@@ -934,72 +933,7 @@ class App {
                 transform: rotate(180deg);
             }
             
-            .quick-enquiry-modal {
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: rgba(0, 0, 0, 0.5);
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                z-index: 9999;
-            }
-            
-            .quick-enquiry-modal .modal-content {
-                background: white;
-                border-radius: 10px;
-                padding: 2rem;
-                max-width: 500px;
-                width: 90%;
-                max-height: 80vh;
-                overflow-y: auto;
-            }
-            
-            .quick-enquiry-modal .modal-header {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                margin-bottom: 1.5rem;
-            }
-            
-            .quick-enquiry-modal .close-btn {
-                background: none;
-                border: none;
-                font-size: 1.5rem;
-                cursor: pointer;
-                color: #666;
-            }
-            
-            .quick-enquiry-modal .form-group {
-                margin-bottom: 1rem;
-            }
-            
-            .quick-enquiry-modal input,
-            .quick-enquiry-modal textarea {
-                width: 100%;
-                padding: 0.75rem;
-                border: 1px solid #ddd;
-                border-radius: 5px;
-                font-size: 1rem;
-            }
-            
-            .quick-enquiry-modal .btn-primary {
-                background: #fbbf24;
-                border: none;
-                color: #121f3e;
-                padding: 0.75rem 2rem;
-                border-radius: 25px;
-                font-weight: 600;
-                cursor: pointer;
-                transition: all 0.3s ease;
-            }
-            
-            .quick-enquiry-modal .btn-primary:hover {
-                background: #f59e0b;
-                transform: translateY(-2px);
-            }
+
         `;
         document.head.appendChild(style);
     }

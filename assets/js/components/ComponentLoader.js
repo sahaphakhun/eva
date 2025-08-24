@@ -90,9 +90,7 @@ class ComponentLoader {
             case 'sections/industries':
                 this.initializeIndustries(container);
                 break;
-            case 'ui/quick-enquiry':
-                this.initializeQuickEnquiry(container);
-                break;
+
             default:
                 // Component ไม่ต้องการการเริ่มต้นพิเศษ
                 break;
@@ -171,25 +169,7 @@ class ComponentLoader {
         });
     }
 
-    /**
-     * เริ่มต้น Quick Enquiry component
-     */
-    initializeQuickEnquiry(container) {
-        const quickEnquiryBtn = container.querySelector('.quick-enquiry-sidebar');
-        const chatBtn = container.querySelector('.floating-chat-button');
 
-        if (quickEnquiryBtn) {
-            quickEnquiryBtn.addEventListener('click', () => {
-                this.openQuickEnquiry();
-            });
-        }
-
-        if (chatBtn) {
-            chatBtn.addEventListener('click', () => {
-                this.openChat();
-            });
-        }
-    }
 
     /**
      * สลับ slide ใน hero section
@@ -214,57 +194,7 @@ class ComponentLoader {
         }, 5000);
     }
 
-    /**
-     * เปิด Quick Enquiry modal
-     */
-    openQuickEnquiry() {
-        // สร้าง modal สำหรับ quick enquiry
-        const modal = document.createElement('div');
-        modal.className = 'quick-enquiry-modal';
-        modal.innerHTML = `
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3>Quick Enquiry</h3>
-                    <button class="close-btn">&times;</button>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="form-group">
-                            <input type="text" placeholder="Your Name" required>
-                        </div>
-                        <div class="form-group">
-                            <input type="email" placeholder="Your Email" required>
-                        </div>
-                        <div class="form-group">
-                            <textarea placeholder="Your Message" rows="4" required></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Send Message</button>
-                    </form>
-                </div>
-            </div>
-        `;
 
-        document.body.appendChild(modal);
-
-        // ปิด modal
-        const closeBtn = modal.querySelector('.close-btn');
-        closeBtn.addEventListener('click', () => {
-            document.body.removeChild(modal);
-        });
-
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) {
-                document.body.removeChild(modal);
-            }
-        });
-    }
-
-    /**
-     * เปิด Chat
-     */
-    openChat() {
-        alert('Chat feature coming soon!');
-    }
 
     /**
      * แสดงข้อผิดพลาด

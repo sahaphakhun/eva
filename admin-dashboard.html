@@ -90,12 +90,16 @@
                 <i class="fas fa-cloud me-2"></i>
                 EVA Cloud Admin
             </a>
-            <div class="navbar-nav ms-auto">
-                <span class="navbar-text">
-                    <i class="fas fa-user-circle me-2"></i>
-                    ผู้ดูแลระบบ
-                </span>
-            </div>
+                    <div class="navbar-nav ms-auto">
+            <span class="navbar-text me-3">
+                <i class="fas fa-user-circle me-2"></i>
+                ผู้ดูแลระบบ
+            </span>
+            <button class="btn btn-outline-danger btn-sm" onclick="logout()">
+                <i class="fas fa-sign-out-alt me-1"></i>
+                ออกจากระบบ
+            </button>
+        </div>
         </div>
     </nav>
 
@@ -274,9 +278,26 @@
 
         // Load data on page load
         document.addEventListener('DOMContentLoaded', function() {
+            // ตรวจสอบ token ก่อน
+            checkAuth();
             loadRegistrations();
             loadStatistics();
         });
+
+        // ตรวจสอบการยืนยันตัวตน
+        function checkAuth() {
+            const token = localStorage.getItem('adminToken');
+            if (!token) {
+                window.location.href = '/admin-login';
+                return;
+            }
+        }
+
+        // ออกจากระบบ
+        function logout() {
+            localStorage.removeItem('adminToken');
+            window.location.href = '/admin-login';
+        }
 
         // Search and filter functionality
         document.getElementById('searchInput').addEventListener('input', filterData);
@@ -285,7 +306,19 @@
 
         async function loadRegistrations() {
             try {
-                const response = await fetch('/api/registrations');
+                const token = localStorage.getItem('adminToken');
+                const response = await fetch('/api/registrations', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                
+                if (response.status === 401) {
+                    // Token ไม่ถูกต้อง ให้ไปหน้า login
+                    window.location.href = '/admin-login';
+                    return;
+                }
+                
                 if (response.ok) {
                     allRegistrations = await response.json();
                     filterData();
@@ -411,7 +444,18 @@
 
         async function loadStatistics() {
             try {
-                const response = await fetch('/api/statistics');
+                const token = localStorage.getItem('adminToken');
+                const response = await fetch('/api/statistics', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                
+                if (response.status === 401) {
+                    window.location.href = '/admin-login';
+                    return;
+                }
+                
                 if (response.ok) {
                     const stats = await response.json();
                     document.getElementById('totalRegistrations').textContent = stats.total;
@@ -436,13 +480,20 @@
             const notes = document.getElementById('notes').value;
 
             try {
+                const token = localStorage.getItem('adminToken');
                 const response = await fetch(`/api/registrations/${id}/status`, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
                     },
                     body: JSON.stringify({ status, notes })
                 });
+
+                if (response.status === 401) {
+                    window.location.href = '/admin-login';
+                    return;
+                }
 
                 if (response.ok) {
                     bootstrap.Modal.getInstance(document.getElementById('statusModal')).hide();
