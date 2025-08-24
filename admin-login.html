@@ -165,8 +165,9 @@
                     document.getElementById('password').focus();
                 }
             } catch (error) {
-                errorText.textContent = 'เกิดข้อผิดพลาดในการเชื่อมต่อ';
+                errorText.textContent = 'เกิดข้อผิดพลาดในการเชื่อมต่อ กรุณาลองใหม่อีกครั้ง';
                 errorMessage.style.display = 'block';
+                console.error('Login error:', error);
             }
         });
 

@@ -60,6 +60,10 @@ function requireAdminAuthHTML(req, res, next) {
     const token = req.query.token || req.cookies?.adminToken;
 
     if (!token || !verifyAdminToken(token)) {
+        // ป้องกัน redirect loop โดยตรวจสอบว่า request มาจากหน้าไหน
+        if (req.path === '/admin-login') {
+            return res.status(403).send('Access denied');
+        }
         return res.redirect('/admin-login');
     }
 
