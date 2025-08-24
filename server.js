@@ -5,12 +5,6 @@ const { MongoClient } = require('mongodb');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const config = require('./config');
-const { 
-    verifyAdminPassword, 
-    generateAdminToken, 
-    requireAdminAuth, 
-    requireAdminAuthHTML 
-} = require('./middleware');
 
 const app = express();
 const PORT = config.PORT;
@@ -155,32 +149,8 @@ app.post('/api/register', async (req, res) => {
     }
 });
 
-// Admin login endpoint
-app.post('/api/admin/login', (req, res) => {
-    try {
-        const { password } = req.body;
-        
-        if (!password) {
-            return res.status(400).json({ message: 'กรุณาใส่รหัสผ่าน' });
-        }
-
-        if (verifyAdminPassword(password)) {
-            const token = generateAdminToken();
-            res.json({
-                message: 'เข้าสู่ระบบสำเร็จ',
-                token: token
-            });
-        } else {
-            res.status(401).json({ message: 'รหัสผ่านไม่ถูกต้อง' });
-        }
-    } catch (error) {
-        console.error('Admin login error:', error);
-        res.status(500).json({ message: 'เกิดข้อผิดพลาดในการเข้าสู่ระบบ กรุณาลองใหม่อีกครั้ง' });
-    }
-});
-
-// Get all registrations (requires admin auth)
-app.get('/api/registrations', requireAdminAuth, async (req, res) => {
+// Get all registrations (no auth required)
+app.get('/api/registrations', async (req, res) => {
     try {
         if (!db) {
             return res.status(500).json({ message: 'Database not connected' });
@@ -199,8 +169,8 @@ app.get('/api/registrations', requireAdminAuth, async (req, res) => {
     }
 });
 
-// Update registration status (requires admin auth)
-app.put('/api/registrations/:id/status', requireAdminAuth, async (req, res) => {
+// Update registration status (no auth required)
+app.put('/api/registrations/:id/status', async (req, res) => {
     try {
         if (!db) {
             return res.status(500).json({ message: 'Database not connected' });
@@ -236,8 +206,8 @@ app.put('/api/registrations/:id/status', requireAdminAuth, async (req, res) => {
     }
 });
 
-// Get statistics (requires admin auth)
-app.get('/api/statistics', requireAdminAuth, async (req, res) => {
+// Get statistics (no auth required)
+app.get('/api/statistics', async (req, res) => {
     try {
         if (!db) {
             return res.status(500).json({ message: 'Database not connected' });
@@ -267,10 +237,10 @@ app.get('/api/statistics', requireAdminAuth, async (req, res) => {
     }
 });
 
-// Demo date management endpoints (requires admin auth)
+// Demo date management endpoints (no auth required)
 
 // Get all demo date options
-app.get('/api/demo-dates', requireAdminAuth, async (req, res) => {
+app.get('/api/demo-dates', async (req, res) => {
     try {
         if (!db) {
             return res.status(500).json({ message: 'Database not connected' });
@@ -285,7 +255,7 @@ app.get('/api/demo-dates', requireAdminAuth, async (req, res) => {
 });
 
 // Add new demo date option
-app.post('/api/demo-dates', requireAdminAuth, async (req, res) => {
+app.post('/api/demo-dates', async (req, res) => {
     try {
         if (!db) {
             return res.status(500).json({ message: 'Database not connected' });
@@ -320,7 +290,7 @@ app.post('/api/demo-dates', requireAdminAuth, async (req, res) => {
 });
 
 // Update demo date option
-app.put('/api/demo-dates/:id', requireAdminAuth, async (req, res) => {
+app.put('/api/demo-dates/:id', async (req, res) => {
     try {
         if (!db) {
             return res.status(500).json({ message: 'Database not connected' });
@@ -364,7 +334,7 @@ app.put('/api/demo-dates/:id', requireAdminAuth, async (req, res) => {
 });
 
 // Delete demo date option
-app.delete('/api/demo-dates/:id', requireAdminAuth, async (req, res) => {
+app.delete('/api/demo-dates/:id', async (req, res) => {
     try {
         if (!db) {
             return res.status(500).json({ message: 'Database not connected' });
@@ -430,20 +400,12 @@ app.get('/eva-registration', (req, res) => {
     res.sendFile(path.join(__dirname, 'eva-registration.html'));
 });
 
-app.get('/admin-login', (req, res) => {
-    res.sendFile(path.join(__dirname, 'admin-login.html'));
-});
-
-app.get('/admin', requireAdminAuthHTML, (req, res) => {
+app.get('/admin', (req, res) => {
     res.sendFile(path.join(__dirname, 'admin-dashboard.html'));
 });
 
 app.get('/test', (req, res) => {
     res.sendFile(path.join(__dirname, 'test-registration.html'));
-});
-
-app.get('/test-admin-auth', (req, res) => {
-    res.sendFile(path.join(__dirname, 'test-admin-auth.html'));
 });
 
 // Handle all other routes by serving index.html (for SPA-like behavior)
@@ -459,10 +421,8 @@ app.listen(PORT, () => {
   console.log(`EvA Cloud website is running on port ${PORT}`);
   console.log(`Visit: http://localhost:${PORT}`);
         console.log(`Registration form: http://localhost:${PORT}/eva-registration`);
-        console.log(`Admin login: http://localhost:${PORT}/admin-login`);
         console.log(`Admin dashboard: http://localhost:${PORT}/admin`);
         console.log(`Test page: http://localhost:${PORT}/test`);
-        console.log(`Admin auth test: http://localhost:${PORT}/test-admin-auth`);
 });
 }
 

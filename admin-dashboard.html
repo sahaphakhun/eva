@@ -367,37 +367,14 @@
 
         // Load data on page load
         document.addEventListener('DOMContentLoaded', function() {
-            // ตรวจสอบ token ก่อน
-            checkAuth();
-            loadRegistrations();
-            loadStatistics();
-            // Load demo dates for reference
-            loadDemoDates();
+                    // โหลดข้อมูลทั้งหมด
+        loadRegistrations();
+        loadStatistics();
+        // Load demo dates for reference
+        loadDemoDates();
         });
 
-        // ตรวจสอบการยืนยันตัวตน
-        function checkAuth() {
-            const token = localStorage.getItem('adminToken');
-            if (!token) {
-                // ป้องกันการ redirect ซ้ำ
-                if (window.location.pathname !== '/admin-login') {
-                    window.location.href = '/admin-login';
-                }
-                return false;
-            }
-            return true;
-        }
-
-        // ออกจากระบบ
-        function logout() {
-            localStorage.removeItem('adminToken');
-            if (window.location.pathname !== '/admin-login') {
-                window.location.href = '/admin-login';
-            } else {
-                // ถ้าอยู่ในหน้า login อยู่แล้ว ให้รีโหลดหน้า
-                window.location.reload();
-            }
-        }
+        // ฟังก์ชันสำหรับการจัดการข้อมูล (ไม่ต้องตรวจสอบ authentication)
 
         // Search and filter functionality
         document.getElementById('searchInput').addEventListener('input', filterData);
@@ -406,28 +383,7 @@
 
         async function loadRegistrations() {
             try {
-                const token = localStorage.getItem('adminToken');
-                if (!token) {
-                    if (window.location.pathname !== '/admin-login') {
-                        window.location.href = '/admin-login';
-                    }
-                    return;
-                }
-
-                const response = await fetch('/api/registrations', {
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
-                });
-                
-                if (response.status === 401) {
-                    // Token ไม่ถูกต้อง ให้ไปหน้า login
-                    localStorage.removeItem('adminToken');
-                    if (window.location.pathname !== '/admin-login') {
-                        window.location.href = '/admin-login';
-                    }
-                    return;
-                }
+                const response = await fetch('/api/registrations');
                 
                 if (response.ok) {
                     allRegistrations = await response.json();
@@ -438,7 +394,6 @@
                 }
             } catch (error) {
                 console.error('Error loading registrations:', error);
-                // ไม่ต้อง redirect เมื่อเกิด network error
             }
         }
 
@@ -556,28 +511,7 @@
 
         async function loadStatistics() {
             try {
-                const token = localStorage.getItem('adminToken');
-                if (!token) {
-                    if (window.location.pathname !== '/admin-login') {
-                        window.location.href = '/admin-login';
-                    }
-                    return;
-                }
-
-                const response = await fetch('/api/statistics', {
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
-                });
-                
-                if (response.status === 401) {
-                    // Token ไม่ถูกต้องหรือหมดอายุ
-                    localStorage.removeItem('adminToken');
-                    if (window.location.pathname !== '/admin-login') {
-                        window.location.href = '/admin-login';
-                    }
-                    return;
-                }
+                const response = await fetch('/api/statistics');
                 
                 if (response.ok) {
                     const stats = await response.json();
@@ -588,7 +522,6 @@
                 }
             } catch (error) {
                 console.error('Error loading statistics:', error);
-                // ไม่ต้อง redirect เมื่อเกิด network error
             }
         }
 
@@ -604,31 +537,13 @@
             const notes = document.getElementById('notes').value;
 
             try {
-                const token = localStorage.getItem('adminToken');
-                if (!token) {
-                    if (window.location.pathname !== '/admin-login') {
-                        window.location.href = '/admin-login';
-                    }
-                    return;
-                }
-
                 const response = await fetch(`/api/registrations/${id}/status`, {
                     method: 'PUT',
                     headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
+                        'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({ status, notes })
                 });
-
-                if (response.status === 401) {
-                    // Token ไม่ถูกต้องหรือหมดอายุ
-                    localStorage.removeItem('adminToken');
-                    if (window.location.pathname !== '/admin-login') {
-                        window.location.href = '/admin-login';
-                    }
-                    return;
-                }
 
                 if (response.ok) {
                     bootstrap.Modal.getInstance(document.getElementById('statusModal')).hide();
@@ -639,7 +554,6 @@
                 }
             } catch (error) {
                 console.error('Error updating status:', error);
-                // ไม่ต้อง redirect เมื่อเกิด network error
                 alert('เกิดข้อผิดพลาดในการเชื่อมต่อ กรุณาลองใหม่อีกครั้ง');
             }
         }
@@ -699,27 +613,7 @@ ID Line: ${registration.lineId}
 
         async function loadDemoDates() {
             try {
-                const token = localStorage.getItem('adminToken');
-                if (!token) {
-                    if (window.location.pathname !== '/admin-login') {
-                        window.location.href = '/admin-login';
-                    }
-                    return;
-                }
-
-                const response = await fetch('/api/demo-dates', {
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
-                });
-                
-                if (response.status === 401) {
-                    localStorage.removeItem('adminToken');
-                    if (window.location.pathname !== '/admin-login') {
-                        window.location.href = '/admin-login';
-                    }
-                    return;
-                }
+                const response = await fetch('/api/demo-dates');
                 
                 if (response.ok) {
                     allDemoDates = await response.json();
@@ -729,7 +623,6 @@ ID Line: ${registration.lineId}
                 }
             } catch (error) {
                 console.error('Error loading demo dates:', error);
-                // ไม่ต้อง redirect เมื่อเกิด network error
             }
         }
 
@@ -788,33 +681,16 @@ ID Line: ${registration.lineId}
             }
 
             try {
-                const token = localStorage.getItem('adminToken');
-                if (!token) {
-                    if (window.location.pathname !== '/admin-login') {
-                        window.location.href = '/admin-login';
-                    }
-                    return;
-                }
-
                 const url = id ? `/api/demo-dates/${id}` : '/api/demo-dates';
                 const method = id ? 'PUT' : 'POST';
 
                 const response = await fetch(url, {
                     method: method,
                     headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
+                        'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({ dateText, maxCount })
                 });
-
-                if (response.status === 401) {
-                    localStorage.removeItem('adminToken');
-                    if (window.location.pathname !== '/admin-login') {
-                        window.location.href = '/admin-login';
-                    }
-                    return;
-                }
 
                 if (response.ok) {
                     bootstrap.Modal.getInstance(document.getElementById('demoDateModal')).hide();
@@ -837,28 +713,9 @@ ID Line: ${registration.lineId}
             }
 
             try {
-                const token = localStorage.getItem('adminToken');
-                if (!token) {
-                    if (window.location.pathname !== '/admin-login') {
-                        window.location.href = '/admin-login';
-                    }
-                    return;
-                }
-
                 const response = await fetch(`/api/demo-dates/${id}`, {
-                    method: 'DELETE',
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
+                    method: 'DELETE'
                 });
-
-                if (response.status === 401) {
-                    localStorage.removeItem('adminToken');
-                    if (window.location.pathname !== '/admin-login') {
-                        window.location.href = '/admin-login';
-                    }
-                    return;
-                }
 
                 if (response.ok) {
                     loadDemoDates();
