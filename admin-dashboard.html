@@ -390,7 +390,9 @@
         // ออกจากระบบ
         function logout() {
             localStorage.removeItem('adminToken');
-            window.location.href = '/admin-login';
+            if (window.location.pathname !== '/admin-login') {
+                window.location.href = '/admin-login';
+            }
         }
 
         // Search and filter functionality
@@ -557,7 +559,9 @@
                 if (response.status === 401) {
                     // Token ไม่ถูกต้องหรือหมดอายุ
                     localStorage.removeItem('adminToken');
-                    window.location.href = '/admin-login';
+                    if (window.location.pathname !== '/admin-login') {
+                        window.location.href = '/admin-login';
+                    }
                     return;
                 }
                 
@@ -572,7 +576,9 @@
                 console.error('Error loading statistics:', error);
                 // เกิดข้อผิดพลาดในการเชื่อมต่อ ให้ลบ token และไปหน้า login
                 localStorage.removeItem('adminToken');
-                window.location.href = '/admin-login';
+                if (window.location.pathname !== '/admin-login') {
+                    window.location.href = '/admin-login';
+                }
             }
         }
 
@@ -590,7 +596,9 @@
             try {
                 const token = localStorage.getItem('adminToken');
                 if (!token) {
-                    window.location.href = '/admin-login';
+                    if (window.location.pathname !== '/admin-login') {
+                        window.location.href = '/admin-login';
+                    }
                     return;
                 }
 
@@ -606,7 +614,9 @@
                 if (response.status === 401) {
                     // Token ไม่ถูกต้องหรือหมดอายุ
                     localStorage.removeItem('adminToken');
-                    window.location.href = '/admin-login';
+                    if (window.location.pathname !== '/admin-login') {
+                        window.location.href = '/admin-login';
+                    }
                     return;
                 }
 
@@ -621,7 +631,9 @@
                 console.error('Error updating status:', error);
                 // เกิดข้อผิดพลาดในการเชื่อมต่อ ให้ลบ token และไปหน้า login
                 localStorage.removeItem('adminToken');
-                window.location.href = '/admin-login';
+                if (window.location.pathname !== '/admin-login') {
+                    window.location.href = '/admin-login';
+                }
             }
         }
 
@@ -688,7 +700,10 @@ ID Line: ${registration.lineId}
                 });
                 
                 if (response.status === 401) {
-                    window.location.href = '/admin-login';
+                    localStorage.removeItem('adminToken');
+                    if (window.location.pathname !== '/admin-login') {
+                        window.location.href = '/admin-login';
+                    }
                     return;
                 }
                 
@@ -760,7 +775,9 @@ ID Line: ${registration.lineId}
             try {
                 const token = localStorage.getItem('adminToken');
                 if (!token) {
-                    window.location.href = '/admin-login';
+                    if (window.location.pathname !== '/admin-login') {
+                        window.location.href = '/admin-login';
+                    }
                     return;
                 }
 
@@ -778,7 +795,9 @@ ID Line: ${registration.lineId}
 
                 if (response.status === 401) {
                     localStorage.removeItem('adminToken');
-                    window.location.href = '/admin-login';
+                    if (window.location.pathname !== '/admin-login') {
+                        window.location.href = '/admin-login';
+                    }
                     return;
                 }
 
@@ -805,7 +824,9 @@ ID Line: ${registration.lineId}
             try {
                 const token = localStorage.getItem('adminToken');
                 if (!token) {
-                    window.location.href = '/admin-login';
+                    if (window.location.pathname !== '/admin-login') {
+                        window.location.href = '/admin-login';
+                    }
                     return;
                 }
 
@@ -818,7 +839,9 @@ ID Line: ${registration.lineId}
 
                 if (response.status === 401) {
                     localStorage.removeItem('adminToken');
-                    window.location.href = '/admin-login';
+                    if (window.location.pathname !== '/admin-login') {
+                        window.location.href = '/admin-login';
+                    }
                     return;
                 }
 

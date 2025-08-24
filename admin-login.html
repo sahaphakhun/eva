@@ -174,8 +174,8 @@
         window.addEventListener('load', async function() {
             const token = localStorage.getItem('adminToken');
             if (token) {
+                // ตรวจสอบว่า token ยังใช้งานได้หรือไม่
                 try {
-                    // ตรวจสอบว่า token ยังใช้งานได้หรือไม่
                     const response = await fetch('/api/statistics', {
                         headers: {
                             'Authorization': `Bearer ${token}`

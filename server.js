@@ -54,13 +54,13 @@ app.use(express.static(__dirname));
 
 // Health check endpoint
 app.get('/health', (req, res) => {
-    res.status(200).json({
-        status: 'OK',
-        timestamp: new Date().toISOString(),
-        uptime: process.uptime(),
+  res.status(200).json({
+    status: 'OK',
+    timestamp: new Date().toISOString(),
+    uptime: process.uptime(),
         environment: process.env.NODE_ENV || 'development',
         mongodb: db ? 'connected' : 'disconnected'
-    });
+  });
 });
 
 // API Routes
@@ -448,22 +448,22 @@ app.get('/test-admin-auth', (req, res) => {
 
 // Handle all other routes by serving index.html (for SPA-like behavior)
 app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'index.html'));
+  res.sendFile(path.join(__dirname, 'index.html'));
 });
 
 // Start server
 async function startServer() {
     await connectToMongoDB();
-    
-    app.listen(PORT, () => {
-        console.log(`EvA Cloud website is running on port ${PORT}`);
-        console.log(`Visit: http://localhost:${PORT}`);
+
+app.listen(PORT, () => {
+  console.log(`EvA Cloud website is running on port ${PORT}`);
+  console.log(`Visit: http://localhost:${PORT}`);
         console.log(`Registration form: http://localhost:${PORT}/eva-registration`);
         console.log(`Admin login: http://localhost:${PORT}/admin-login`);
         console.log(`Admin dashboard: http://localhost:${PORT}/admin`);
         console.log(`Test page: http://localhost:${PORT}/test`);
         console.log(`Admin auth test: http://localhost:${PORT}/test-admin-auth`);
-    });
+});
 }
 
 startServer().catch(console.error);
