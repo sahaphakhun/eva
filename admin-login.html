@@ -189,9 +189,11 @@
                         // Token ไม่ถูกต้องหรือหมดอายุ ให้ลบออก
                         localStorage.removeItem('adminToken');
                     }
+                    // ไม่ต้องทำอะไรถ้า response ไม่ใช่ 401 หรือ ok
                 } catch (error) {
-                    // เกิดข้อผิดพลาดในการเชื่อมต่อ ให้ลบ token
-                    localStorage.removeItem('adminToken');
+                    // เกิดข้อผิดพลาดในการเชื่อมต่อ ไม่ต้องลบ token ทันที
+                    // ให้ผู้ใช้ลองเข้าสู่ระบบใหม่แทน
+                    console.log('Network error during token validation:', error);
                 }
             }
         });

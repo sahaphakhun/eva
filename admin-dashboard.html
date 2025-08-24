@@ -383,8 +383,9 @@
                 if (window.location.pathname !== '/admin-login') {
                     window.location.href = '/admin-login';
                 }
-                return;
+                return false;
             }
+            return true;
         }
 
         // ออกจากระบบ
@@ -403,6 +404,13 @@
         async function loadRegistrations() {
             try {
                 const token = localStorage.getItem('adminToken');
+                if (!token) {
+                    if (window.location.pathname !== '/admin-login') {
+                        window.location.href = '/admin-login';
+                    }
+                    return;
+                }
+
                 const response = await fetch('/api/registrations', {
                     headers: {
                         'Authorization': `Bearer ${token}`
@@ -427,6 +435,7 @@
                 }
             } catch (error) {
                 console.error('Error loading registrations:', error);
+                // ไม่ต้อง redirect เมื่อเกิด network error
             }
         }
 
@@ -546,7 +555,9 @@
             try {
                 const token = localStorage.getItem('adminToken');
                 if (!token) {
-                    window.location.href = '/admin-login';
+                    if (window.location.pathname !== '/admin-login') {
+                        window.location.href = '/admin-login';
+                    }
                     return;
                 }
 
@@ -574,11 +585,7 @@
                 }
             } catch (error) {
                 console.error('Error loading statistics:', error);
-                // เกิดข้อผิดพลาดในการเชื่อมต่อ ให้ลบ token และไปหน้า login
-                localStorage.removeItem('adminToken');
-                if (window.location.pathname !== '/admin-login') {
-                    window.location.href = '/admin-login';
-                }
+                // ไม่ต้อง redirect เมื่อเกิด network error
             }
         }
 
