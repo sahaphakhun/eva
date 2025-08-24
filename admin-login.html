@@ -141,15 +141,31 @@
             const password = document.getElementById('password').value;
             const errorMessage = document.getElementById('errorMessage');
             const errorText = document.getElementById('errorText');
+            const submitButton = e.target.querySelector('button[type="submit"]');
+            
+            // ป้องกันการส่งฟอร์มซ้ำ
+            if (submitButton.disabled) {
+                return;
+            }
+            
+            // ปิดปุ่มและแสดงสถานะ loading
+            submitButton.disabled = true;
+            submitButton.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>กำลังเข้าสู่ระบบ...';
             
             try {
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 10000); // timeout 10 วินาที
+                
                 const response = await fetch('/api/admin/login', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ password })
+                    body: JSON.stringify({ password }),
+                    signal: controller.signal
                 });
+                
+                clearTimeout(timeoutId);
                 
                 if (response.ok) {
                     const data = await response.json();
@@ -165,23 +181,44 @@
                     document.getElementById('password').focus();
                 }
             } catch (error) {
-                errorText.textContent = 'เกิดข้อผิดพลาดในการเชื่อมต่อ กรุณาลองใหม่อีกครั้ง';
+                if (error.name === 'AbortError') {
+                    errorText.textContent = 'การเชื่อมต่อใช้เวลานานเกินไป กรุณาลองใหม่อีกครั้ง';
+                } else {
+                    errorText.textContent = 'เกิดข้อผิดพลาดในการเชื่อมต่อ กรุณาลองใหม่อีกครั้ง';
+                }
                 errorMessage.style.display = 'block';
                 console.error('Login error:', error);
+            } finally {
+                // เปิดปุ่มและคืนค่าข้อความเดิม
+                submitButton.disabled = false;
+                submitButton.innerHTML = '<i class="fas fa-sign-in-alt me-2"></i>เข้าสู่ระบบ';
             }
         });
 
         // ตรวจสอบว่ามี token อยู่แล้วหรือไม่
         window.addEventListener('load', async function() {
+            // ป้องกันการตรวจสอบซ้ำ
+            if (window.tokenCheckInProgress) {
+                return;
+            }
+            
             const token = localStorage.getItem('adminToken');
             if (token) {
+                window.tokenCheckInProgress = true;
+                
                 // ตรวจสอบว่า token ยังใช้งานได้หรือไม่
                 try {
+                    const controller = new AbortController();
+                    const timeoutId = setTimeout(() => controller.abort(), 5000); // timeout 5 วินาที
+                    
                     const response = await fetch('/api/statistics', {
                         headers: {
                             'Authorization': `Bearer ${token}`
-                        }
+                        },
+                        signal: controller.signal
                     });
+                    
+                    clearTimeout(timeoutId);
                     
                     if (response.ok) {
                         // Token ยังใช้งานได้ ให้ไปยังหน้าแอดมิน
@@ -192,9 +229,11 @@
                     }
                     // ไม่ต้องทำอะไรถ้า response ไม่ใช่ 401 หรือ ok
                 } catch (error) {
-                    // เกิดข้อผิดพลาดในการเชื่อมต่อ ไม่ต้องลบ token ทันที
-                    // ให้ผู้ใช้ลองเข้าสู่ระบบใหม่แทน
+                    // เกิดข้อผิดพลาดในการเชื่อมต่อ ให้ลบ token เพื่อป้องกัน redirect loop
                     console.log('Network error during token validation:', error);
+                    localStorage.removeItem('adminToken');
+                } finally {
+                    window.tokenCheckInProgress = false;
                 }
             }
         });

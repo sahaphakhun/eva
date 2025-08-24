@@ -64,6 +64,11 @@ function requireAdminAuthHTML(req, res, next) {
         if (req.path === '/admin-login') {
             return res.status(403).send('Access denied');
         }
+        // เพิ่มการตรวจสอบ referer เพื่อป้องกัน redirect loop
+        const referer = req.get('Referer');
+        if (referer && referer.includes('/admin-login')) {
+            return res.status(403).send('Access denied - Redirect loop detected');
+        }
         return res.redirect('/admin-login');
     }
 

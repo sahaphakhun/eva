@@ -175,7 +175,7 @@ app.post('/api/admin/login', (req, res) => {
         }
     } catch (error) {
         console.error('Admin login error:', error);
-        res.status(500).json({ message: 'เกิดข้อผิดพลาดในการเข้าสู่ระบบ' });
+        res.status(500).json({ message: 'เกิดข้อผิดพลาดในการเข้าสู่ระบบ กรุณาลองใหม่อีกครั้ง' });
     }
 });
 
@@ -263,7 +263,7 @@ app.get('/api/statistics', requireAdminAuth, async (req, res) => {
 
     } catch (error) {
         console.error('Statistics error:', error);
-        res.status(500).json({ message: 'เกิดข้อผิดพลาดในการดึงสถิติ' });
+        res.status(500).json({ message: 'เกิดข้อผิดพลาดในการดึงสถิติ กรุณาลองใหม่อีกครั้ง' });
     }
 });
 
