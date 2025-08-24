@@ -270,6 +270,10 @@
                                 <i class="fas fa-sync-alt me-1"></i>
                                 รีเฟรช
                             </button>
+                            <button class="btn btn-warning btn-sm" onclick="syncDemoDateCounts()">
+                                <i class="fas fa-sync me-1"></i>
+                                ซิงค์จำนวนคน
+                            </button>
                             <button class="btn btn-success btn-sm" onclick="openAddDemoDateModal()">
                                 <i class="fas fa-plus me-1"></i>
                                 เพิ่มวันที่เดโม่
@@ -656,20 +660,27 @@ ID Line: ${registration.lineId}
 
         async function loadDemoDates() {
             try {
+                console.log('Loading demo dates...');
                 const response = await fetch('/api/demo-dates');
                 
                 if (response.ok) {
                     allDemoDates = await response.json();
+                    console.log('Demo dates loaded:', allDemoDates);
                     displayDemoDates();
                 } else {
-                    console.error('Failed to load demo dates');
+                    console.error('Failed to load demo dates:', response.status, response.statusText);
+                    const errorText = await response.text();
+                    console.error('Error response:', errorText);
+                    
                     const tbody = document.getElementById('demoDatesTableBody');
                     tbody.innerHTML = `
                         <tr>
                             <td colspan="6" class="text-center text-danger py-4">
                                 <i class="fas fa-exclamation-triangle fa-2x mb-2"></i>
                                 <br>
-                                เกิดข้อผิดพลาดในการโหลดข้อมูล
+                                เกิดข้อผิดพลาดในการโหลดข้อมูล (${response.status})
+                                <br>
+                                <small class="text-muted">${errorText}</small>
                                 <br>
                                 <button class="btn btn-sm btn-outline-primary mt-2" onclick="loadDemoDates()">
                                     <i class="fas fa-sync-alt me-1"></i>
@@ -688,6 +699,8 @@ ID Line: ${registration.lineId}
                             <i class="fas fa-exclamation-triangle fa-2x mb-2"></i>
                             <br>
                             เกิดข้อผิดพลาดในการเชื่อมต่อ
+                            <br>
+                            <small class="text-muted">${error.message}</small>
                             <br>
                             <button class="btn btn-sm btn-outline-primary mt-2" onclick="loadDemoDates()">
                                 <i class="fas fa-sync-alt me-1"></i>
@@ -729,18 +742,22 @@ ID Line: ${registration.lineId}
                     minute: '2-digit'
                 }) : 'ไม่ระบุ';
                 
+                const currentCount = date.currentCount || 0;
+                const remainingSlots = date.maxCount - currentCount;
+                const isFull = currentCount >= date.maxCount;
+                
                 return `
                     <tr>
                         <td>${date.dateText}</td>
                         <td>${date.maxCount}</td>
                         <td>
-                            ${date.currentCount || 0} / ${date.maxCount}
+                            ${currentCount} / ${date.maxCount}
                             <br>
-                            <small class="text-muted">เหลือ ${date.maxCount - (date.currentCount || 0)} คน</small>
+                            <small class="text-muted">เหลือ ${remainingSlots} คน</small>
                         </td>
                         <td>
-                            <span class="badge status-badge ${(date.currentCount || 0) >= date.maxCount ? 'bg-danger' : 'bg-success'}">
-                                ${(date.currentCount || 0) >= date.maxCount ? 'เต็ม' : 'ว่าง'}
+                            <span class="badge status-badge ${isFull ? 'bg-danger' : 'bg-success'}">
+                                ${isFull ? 'เต็ม' : 'ว่าง'}
                             </span>
                         </td>
                         <td>${createdAt}</td>
@@ -749,7 +766,7 @@ ID Line: ${registration.lineId}
                                 <i class="fas fa-edit"></i>
                             </button>
                             <button class="btn btn-sm btn-outline-danger" onclick="deleteDemoDate('${date._id}')" 
-                                    ${(date.currentCount || 0) > 0 ? 'disabled' : ''}>
+                                    ${currentCount > 0 ? 'disabled' : ''}>
                                 <i class="fas fa-trash"></i>
                             </button>
                         </td>
@@ -885,16 +902,43 @@ ID Line: ${registration.lineId}
             const fullDemoDates = allDemoDates.filter(date => (date.currentCount || 0) >= date.maxCount).length;
             const totalRegistrations = allDemoDates.reduce((sum, date) => sum + (date.currentCount || 0), 0);
 
-            document.getElementById('totalDemoDates').textContent = totalDemoDates;
-            document.getElementById('availableDemoDates').textContent = availableDemoDates;
-            document.getElementById('fullDemoDates').textContent = fullDemoDates;
-            document.getElementById('totalRegistrations').textContent = totalRegistrations;
+            // Update summary cards
+            const totalDemoDatesElement = document.getElementById('totalDemoDates');
+            const availableDemoDatesElement = document.getElementById('availableDemoDates');
+            const fullDemoDatesElement = document.getElementById('fullDemoDates');
+            const totalRegistrationsElement = document.getElementById('totalRegistrations');
+
+            if (totalDemoDatesElement) totalDemoDatesElement.textContent = totalDemoDates;
+            if (availableDemoDatesElement) availableDemoDatesElement.textContent = availableDemoDates;
+            if (fullDemoDatesElement) fullDemoDatesElement.textContent = fullDemoDates;
+            if (totalRegistrationsElement) totalRegistrationsElement.textContent = totalRegistrations;
         }
 
         // Load demo dates when switching to demo dates tab
         document.getElementById('demo-dates-tab').addEventListener('click', function() {
             loadDemoDates();
         });
+
+        // Sync demo date counts
+        async function syncDemoDateCounts() {
+            try {
+                const response = await fetch('/api/demo-dates/sync-counts', {
+                    method: 'POST'
+                });
+
+                if (response.ok) {
+                    const result = await response.json();
+                    alert(result.message);
+                    loadDemoDates(); // Reload the data
+                } else {
+                    const errorData = await response.json();
+                    alert(errorData.message || 'เกิดข้อผิดพลาดในการซิงค์จำนวนคน');
+                }
+            } catch (error) {
+                console.error('Error syncing demo date counts:', error);
+                alert('เกิดข้อผิดพลาดในการเชื่อมต่อ');
+            }
+        }
     </script>
 </body>
 </html>

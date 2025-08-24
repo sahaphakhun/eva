@@ -102,11 +102,16 @@ app.post('/api/register', async (req, res) => {
                 return res.status(400).json({ message: 'วันที่เดโม่ที่เลือกไม่ถูกต้อง' });
             }
             
-            if (demoDate.currentCount >= demoDate.maxCount) {
+            // Get actual current count from registrations
+            const actualCurrentCount = await db.collection('registrations').countDocuments({
+                demoDateId: demoDate._id.toString()
+            });
+            
+            if (actualCurrentCount >= demoDate.maxCount) {
                 return res.status(400).json({ message: 'วันที่เดโม่ที่เลือกเต็มแล้ว กรุณาเลือกวันที่อื่น' });
             }
             
-            demoDateId = demoDate._id;
+            demoDateId = demoDate._id.toString();
             demoDateText = demoDate.dateText;
         }
 
@@ -132,9 +137,14 @@ app.post('/api/register', async (req, res) => {
         
         // Update demo date current count if demo date was selected
         if (demoDateId) {
+            // Get the actual count and update it
+            const actualCurrentCount = await db.collection('registrations').countDocuments({
+                demoDateId: demoDateId
+            });
+            
             await db.collection('demoDates').updateOne(
-                { _id: demoDateId },
-                { $inc: { currentCount: 1 } }
+                { _id: new require('mongodb').ObjectId(req.body.demoDateId) },
+                { $set: { currentCount: actualCurrentCount } }
             );
         }
         
@@ -253,6 +263,13 @@ app.get('/api/demo-dates', async (req, res) => {
             const currentCount = await db.collection('registrations').countDocuments({
                 demoDateId: date._id.toString()
             });
+            
+            // Update the currentCount in the database to keep it in sync
+            await db.collection('demoDates').updateOne(
+                { _id: date._id },
+                { $set: { currentCount: currentCount } }
+            );
+            
             return {
                 ...date,
                 currentCount: currentCount
@@ -384,6 +401,39 @@ app.delete('/api/demo-dates/:id', async (req, res) => {
     }
 });
 
+// Sync demo dates current count (utility endpoint)
+app.post('/api/demo-dates/sync-counts', async (req, res) => {
+    try {
+        if (!db) {
+            return res.status(500).json({ message: 'Database not connected' });
+        }
+
+        const demoDates = await db.collection('demoDates').find({}).toArray();
+        let updatedCount = 0;
+
+        for (const date of demoDates) {
+            const actualCurrentCount = await db.collection('registrations').countDocuments({
+                demoDateId: date._id.toString()
+            });
+
+            await db.collection('demoDates').updateOne(
+                { _id: date._id },
+                { $set: { currentCount: actualCurrentCount } }
+            );
+            updatedCount++;
+        }
+
+        res.json({
+            message: `อัปเดตจำนวนคนในวันที่เดโม่ ${updatedCount} รายการสำเร็จ`,
+            updatedCount
+        });
+
+    } catch (error) {
+        console.error('Error syncing demo date counts:', error);
+        res.status(500).json({ message: 'เกิดข้อผิดพลาดในการซิงค์จำนวนคน' });
+    }
+});
+
 // Get demo dates for public form (no auth required)
 app.get('/api/public/demo-dates', async (req, res) => {
     try {
@@ -393,11 +443,18 @@ app.get('/api/public/demo-dates', async (req, res) => {
 
         const demoDates = await db.collection('demoDates').find({}).sort({ createdAt: -1 }).toArray();
         
-        // Add availability status for each date
-        const demoDatesWithStatus = demoDates.map(date => ({
-            ...date,
-            isAvailable: date.currentCount < date.maxCount,
-            remainingSlots: date.maxCount - date.currentCount
+        // Calculate actual current count for each demo date
+        const demoDatesWithStatus = await Promise.all(demoDates.map(async (date) => {
+            const actualCurrentCount = await db.collection('registrations').countDocuments({
+                demoDateId: date._id.toString()
+            });
+            
+            return {
+                ...date,
+                currentCount: actualCurrentCount,
+                isAvailable: actualCurrentCount < date.maxCount,
+                remainingSlots: date.maxCount - actualCurrentCount
+            };
         }));
 
         res.json(demoDatesWithStatus);
