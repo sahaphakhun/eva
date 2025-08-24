@@ -31,6 +31,11 @@ async function connectToMongoDB() {
         await db.collection('registrations').createIndex({ email: 1 }, { unique: true });
         await db.collection('registrations').createIndex({ createdAt: 1 });
         await db.collection('registrations').createIndex({ status: 1 });
+        await db.collection('registrations').createIndex({ demoDateId: 1 });
+        
+        // Create indexes for demo dates
+        await db.collection('demoDates').createIndex({ createdAt: 1 });
+        await db.collection('demoDates').createIndex({ currentCount: 1 });
         
     } catch (error) {
         console.error('MongoDB connection error:', error);
@@ -90,6 +95,27 @@ app.post('/api/register', async (req, res) => {
             return res.status(400).json({ message: 'อีเมลนี้ได้ลงทะเบียนแล้ว' });
         }
 
+        // Check if demo date is selected and validate availability
+        let demoDateId = null;
+        let demoDateText = '';
+        
+        if (req.body.demoDateId) {
+            const demoDate = await db.collection('demoDates').findOne({
+                _id: new require('mongodb').ObjectId(req.body.demoDateId)
+            });
+            
+            if (!demoDate) {
+                return res.status(400).json({ message: 'วันที่เดโม่ที่เลือกไม่ถูกต้อง' });
+            }
+            
+            if (demoDate.currentCount >= demoDate.maxCount) {
+                return res.status(400).json({ message: 'วันที่เดโม่ที่เลือกเต็มแล้ว กรุณาเลือกวันที่อื่น' });
+            }
+            
+            demoDateId = demoDate._id;
+            demoDateText = demoDate.dateText;
+        }
+
         // Create registration
         const registration = {
             title,
@@ -101,12 +127,22 @@ app.post('/api/register', async (req, res) => {
             companyName,
             companyLocation,
             aluminumBrands: aluminumBrands || '',
+            demoDateId,
+            demoDateText,
             status: 'pending',
             createdAt: new Date(),
             updatedAt: new Date()
         };
 
         const result = await db.collection('registrations').insertOne(registration);
+        
+        // Update demo date current count if demo date was selected
+        if (demoDateId) {
+            await db.collection('demoDates').updateOne(
+                { _id: demoDateId },
+                { $inc: { currentCount: 1 } }
+            );
+        }
         
         res.status(201).json({
             message: 'ลงทะเบียนสำเร็จ',
@@ -231,6 +267,164 @@ app.get('/api/statistics', requireAdminAuth, async (req, res) => {
     }
 });
 
+// Demo date management endpoints (requires admin auth)
+
+// Get all demo date options
+app.get('/api/demo-dates', requireAdminAuth, async (req, res) => {
+    try {
+        if (!db) {
+            return res.status(500).json({ message: 'Database not connected' });
+        }
+
+        const demoDates = await db.collection('demoDates').find({}).sort({ createdAt: -1 }).toArray();
+        res.json(demoDates);
+    } catch (error) {
+        console.error('Error fetching demo dates:', error);
+        res.status(500).json({ message: 'เกิดข้อผิดพลาดในการดึงข้อมูลวันที่เดโม่' });
+    }
+});
+
+// Add new demo date option
+app.post('/api/demo-dates', requireAdminAuth, async (req, res) => {
+    try {
+        if (!db) {
+            return res.status(500).json({ message: 'Database not connected' });
+        }
+
+        const { dateText, maxCount } = req.body;
+
+        if (!dateText || !maxCount) {
+            return res.status(400).json({ message: 'กรุณากรอกข้อมูลให้ครบถ้วน' });
+        }
+
+        const demoDate = {
+            dateText,
+            maxCount: parseInt(maxCount),
+            currentCount: 0,
+            createdAt: new Date(),
+            updatedAt: new Date()
+        };
+
+        const result = await db.collection('demoDates').insertOne(demoDate);
+        
+        res.status(201).json({
+            message: 'เพิ่มวันที่เดโม่สำเร็จ',
+            id: result.insertedId,
+            demoDate
+        });
+
+    } catch (error) {
+        console.error('Error adding demo date:', error);
+        res.status(500).json({ message: 'เกิดข้อผิดพลาดในการเพิ่มวันที่เดโม่' });
+    }
+});
+
+// Update demo date option
+app.put('/api/demo-dates/:id', requireAdminAuth, async (req, res) => {
+    try {
+        if (!db) {
+            return res.status(500).json({ message: 'Database not connected' });
+        }
+
+        const { id } = req.params;
+        const { dateText, maxCount } = req.body;
+
+        if (!dateText || !dateText.trim()) {
+            return res.status(400).json({ message: 'กรุณากรอกข้อความวันที่เดโม่' });
+        }
+
+        if (!maxCount || maxCount < 1) {
+            return res.status(400).json({ message: 'จำนวนคนสูงสุดต้องมากกว่า 0' });
+        }
+
+        const updateData = {
+            dateText: dateText.trim(),
+            maxCount: parseInt(maxCount),
+            updatedAt: new Date()
+        };
+
+        const result = await db.collection('demoDates').updateOne(
+            { _id: new require('mongodb').ObjectId(id) },
+            { $set: updateData }
+        );
+
+        if (result.matchedCount === 0) {
+            return res.status(404).json({ message: 'ไม่พบวันที่เดโม่ที่ต้องการแก้ไข' });
+        }
+
+        res.json({
+            message: 'อัปเดตวันที่เดโม่สำเร็จ',
+            id: id
+        });
+
+    } catch (error) {
+        console.error('Error updating demo date:', error);
+        res.status(500).json({ message: 'เกิดข้อผิดพลาดในการอัปเดตวันที่เดโม่' });
+    }
+});
+
+// Delete demo date option
+app.delete('/api/demo-dates/:id', requireAdminAuth, async (req, res) => {
+    try {
+        if (!db) {
+            return res.status(500).json({ message: 'Database not connected' });
+        }
+
+        const { id } = req.params;
+
+        // Check if any registrations are using this demo date
+        const registrationsUsingDate = await db.collection('registrations').findOne({
+            demoDateId: id
+        });
+
+        if (registrationsUsingDate) {
+            return res.status(400).json({ 
+                message: 'ไม่สามารถลบวันที่เดโม่ได้ เนื่องจากมีผู้ลงทะเบียนใช้อยู่' 
+            });
+        }
+
+        const result = await db.collection('demoDates').deleteOne({
+            _id: new require('mongodb').ObjectId(id)
+        });
+
+        if (result.deletedCount === 0) {
+            return res.status(404).json({ message: 'ไม่พบวันที่เดโม่ที่ต้องการลบ' });
+        }
+
+        res.json({
+            message: 'ลบวันที่เดโม่สำเร็จ',
+            id: id
+        });
+
+    } catch (error) {
+        console.error('Error deleting demo date:', error);
+        res.status(500).json({ message: 'เกิดข้อผิดพลาดในการลบวันที่เดโม่' });
+    }
+});
+
+// Get demo dates for public form (no auth required)
+app.get('/api/public/demo-dates', async (req, res) => {
+    try {
+        if (!db) {
+            return res.status(500).json({ message: 'Database not connected' });
+        }
+
+        const demoDates = await db.collection('demoDates').find({}).sort({ createdAt: -1 }).toArray();
+        
+        // Add availability status for each date
+        const demoDatesWithStatus = demoDates.map(date => ({
+            ...date,
+            isAvailable: date.currentCount < date.maxCount,
+            remainingSlots: date.maxCount - date.currentCount
+        }));
+
+        res.json(demoDatesWithStatus);
+    } catch (error) {
+        console.error('Error fetching public demo dates:', error);
+        res.status(500).json({ message: 'เกิดข้อผิดพลาดในการดึงข้อมูลวันที่เดโม่' });
+    }
+});
+
 // Serve specific HTML files
 app.get('/eva-registration', (req, res) => {
     res.sendFile(path.join(__dirname, 'eva-registration.html'));
@@ -246,6 +440,10 @@ app.get('/admin', requireAdminAuthHTML, (req, res) => {
 
 app.get('/test', (req, res) => {
     res.sendFile(path.join(__dirname, 'test-registration.html'));
+});
+
+app.get('/test-admin-auth', (req, res) => {
+    res.sendFile(path.join(__dirname, 'test-admin-auth.html'));
 });
 
 // Handle all other routes by serving index.html (for SPA-like behavior)
@@ -264,6 +462,7 @@ async function startServer() {
         console.log(`Admin login: http://localhost:${PORT}/admin-login`);
         console.log(`Admin dashboard: http://localhost:${PORT}/admin`);
         console.log(`Test page: http://localhost:${PORT}/test`);
+        console.log(`Admin auth test: http://localhost:${PORT}/test-admin-auth`);
     });
 }
 
