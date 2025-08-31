@@ -3,8 +3,7 @@
  * จัดการการทำงานหลักของเว็บไซต์
  */
 
-// Import Component Loader
-import './components/ComponentLoader.js';
+// Component Loader จะถูกโหลดผ่าน script tag แยก
 
 // Global error handler for Bootstrap issues
 window.addEventListener('error', (event) => {

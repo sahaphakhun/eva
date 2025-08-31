@@ -2,6 +2,73 @@
  * Component Loader Module
  * จัดการการโหลด component ต่างๆ
  */
+
+// Global function สำหรับโหลด component
+window.loadComponent = async function(containerId, componentPath, data = {}) {
+    try {
+        const container = document.getElementById(containerId);
+        if (!container) {
+            throw new Error(`Container with ID "${containerId}" not found`);
+        }
+
+        // โหลด component จากไฟล์
+        const response = await fetch(componentPath);
+        if (!response.ok) {
+            throw new Error(`Failed to load component: ${componentPath}`);
+        }
+
+        const html = await response.text();
+        
+        // แสดงผล component
+        container.innerHTML = html;
+
+        // เริ่มต้น component หลังจากโหลดเสร็จ
+        initializeComponent(containerId, container);
+
+    } catch (error) {
+        console.error(`Error loading component ${componentPath}:`, error);
+        showError(containerId, error.message);
+    }
+};
+
+// Global function สำหรับเริ่มต้น component
+window.initializeComponent = function(containerId, container) {
+    switch (containerId) {
+        case 'header-container':
+            initializeHeader(container);
+            break;
+        case 'footer-container':
+            initializeFooter(container);
+            break;
+        case 'head-container':
+            // ไม่ต้องทำอะไรพิเศษ
+            break;
+        default:
+            // Component ไม่ต้องการการเริ่มต้นพิเศษ
+            break;
+    }
+};
+
+// Global function สำหรับแสดง error
+window.showError = function(containerId, message) {
+    const container = document.getElementById(containerId);
+    if (container) {
+        container.innerHTML = `<div class="alert alert-danger">Error loading component: ${message}</div>`;
+    }
+};
+
+// Global function สำหรับเริ่มต้น header
+window.initializeHeader = function(container) {
+    // เริ่มต้น header component
+    console.log('Header component initialized');
+};
+
+// Global function สำหรับเริ่มต้น footer
+window.initializeFooter = function(container) {
+    // เริ่มต้น footer component
+    console.log('Footer component initialized');
+};
+
 class ComponentLoader {
     constructor() {
         this.components = new Map();
